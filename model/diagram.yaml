@@ -1,0 +1,35 @@
+# Figure structure only. All visible text resolves through model/i18n/<locale>.yaml
+# (diagram.*) or from the entity's own name, so figures are bilingual by construction.
+figures:
+  - id: reference-architecture
+    width: 1280
+    height: 940
+    columns:
+      - id: platforms
+        items: [m365-copilot, copilot-studio, foundry, security-copilot]
+      - id: observability
+        items: [agent-365, entra-agent-id, defender-for-ai, defender-xdr, defender-for-cloud]
+      - id: sentinel_layer
+        items: [unified-agent-observability, cloud-app-events, copilot-activity,
+                security-alert, security-incident]
+      - id: connectors
+        items: [conn-agent-365, conn-defender-xdr, conn-defender-cloud]
+    bands:
+      - id: data_lake
+        entity: sentinel-data-lake
+      - id: soc_operations
+        items: [threat_hunting, detection_engineering, investigations,
+                incident_response, governance_risk, analytics_reporting]
+      - id: key_benefits
+        items: [benefit_visibility, benefit_correlation, benefit_posture,
+                benefit_governance, benefit_scale]
+
+  - id: prompt-injection-flow
+    width: 620
+    height: 460
+    steps: [pi_signal, pi_identify, pi_session, pi_pivot, pi_review]
+
+  - id: session-reconstruction
+    width: 620
+    height: 460
+    steps: [sr_prompt, sr_invocation, sr_tools, sr_connector, sr_responses]

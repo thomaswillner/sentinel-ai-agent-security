@@ -1,17 +1,18 @@
 ui:
   lang_name: English
   brief_title: Securing Enterprise AI Agents
-  brief_subtitle: Monitoring, detection and governance across Microsoft Sentinel, Copilot, Defender and Entra
+  brief_subtitle: >-
+    Monitoring, detection and governance across Microsoft Sentinel, Copilot, Defender and Entra
   derived_from: Derived from
   by_author: by
   reconciled_prefix: Reconciled against Microsoft Learn as of
   origin_note: >
-    This is a maintained brief, not a copy. Its claims are re-measured against Microsoft's own
-    documentation on every run, so it reflects current guidance rather than a frozen snapshot.
+    This is a maintained brief, not a copy. Its claims are re-measured against Microsoft's own documentation
+    on every run, so it reflects current guidance rather than a frozen snapshot.
   section_reconciliation: Live reconciliation
   section_reconciliation_intro: >
-    Every component named here is pinned to an authoritative Microsoft Learn page and re-checked
-    automatically. Each row shows what was measured and when.
+    Every component named here is pinned to an authoritative Microsoft Learn page and re-checked automatically.
+    Each row shows what was measured and when.
   col_component: Component
   col_kind: Type
   col_status: Status
@@ -41,3 +42,79 @@ ui:
   figure_hint: Select any component for details. Select the diagram to enlarge it.
   close: Close
   enlarge: Enlarge diagram
+diagram:
+  analytics_reporting: Analytics & reporting
+  band_data_lake: Microsoft Sentinel data lake
+  band_key_benefits: Key benefits
+  band_soc_operations: SOC operations & outcomes
+  benefit_correlation: End-to-end correlation of prompts, actions and alerts
+  benefit_governance: Stronger governance and agent lifecycle management
+  benefit_posture: Improved security posture and data protection
+  benefit_scale: Scalable analytics on the Sentinel data lake
+  benefit_visibility: Unified visibility across agents and platforms
+  col_connectors: Data Connectors
+  col_connectors_sub: Ingestion path
+  col_observability: Security & Observability
+  col_observability_sub: Signal producers
+  col_platforms: AI Platforms
+  col_platforms_sub: Telemetry sources
+  col_sentinel_layer: Microsoft Sentinel
+  col_sentinel_layer_sub: Data layer
+  detection_engineering: Detection engineering
+  fig_prompt-injection-flow: Prompt injection investigation
+  fig_prompt-injection-flow_sub: Pivot from a safety signal to agent runtime behaviour
+  fig_reference-architecture: Reference architecture
+  fig_reference-architecture_sub: AI agent telemetry integration with Microsoft Sentinel
+  fig_session-reconstruction: Session reconstruction
+  fig_session-reconstruction_sub: Correlate a complete forensic timeline
+  governance_risk: Governance & risk
+  incident_response: Incident response
+  investigations: Investigations
+  pi_identify: Identify malicious prompt
+  pi_pivot: Pivot to agent runtime telemetry
+  pi_review: Review tool activity
+  pi_session: Obtain session ID
+  pi_signal: AI safety signal
+  sr_connector: Connector activity
+  sr_invocation: Agent invocation
+  sr_prompt: User prompt
+  sr_responses: Agent responses
+  sr_tools: Tool calls
+  threat_hunting: Threat hunting
+entities:
+  m365-copilot:
+    caption: Copilot across Microsoft 365 apps
+  copilot-studio:
+    caption: Custom low-code agents
+  foundry:
+    caption: Agents and models on Foundry
+  security-copilot:
+    caption: Analyst-facing security Copilot
+  agent-365:
+    caption: Runtime telemetry for every agent
+  entra-agent-id:
+    caption: Agent identities and ownership
+  defender-for-ai:
+    caption: Prompt Shield, XPIA, jailbreak detection
+  defender-xdr:
+    caption: Detections, incidents, hunting
+  defender-for-cloud:
+    caption: Cloud workload and AI alerts
+  unified-agent-observability:
+    caption: Article's named runtime table
+  cloud-app-events:
+    caption: AI safety signals and verdicts
+  copilot-activity:
+    caption: Copilot usage and audit logs
+  security-alert:
+    caption: AI-related security alerts
+  security-incident:
+    caption: Correlated incidents
+  conn-agent-365:
+    caption: Ingests agent runtime telemetry
+  conn-defender-xdr:
+    caption: Ingests CloudAppEvents and alerts
+  conn-defender-cloud:
+    caption: Ingests cloud and AI alerts
+  sentinel-data-lake:
+    caption: Long-term retention for hunting, analytics and investigations
