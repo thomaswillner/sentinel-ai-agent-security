@@ -168,6 +168,16 @@ entities:
     summary: >
       Die maßgebliche Attributliste für Agent-365-Observability-Spans. Sie legt fest, welche Felder je
       Operation verpflichtend sind und welche in abfragbare Hunting-Felder überführt werden.
+  sentinel-mcp-tools:
+    summary: >-
+      Das MCP-Werkzeug zur Datenexploration in Sentinel, das KQL im Auftrag eines Agenten gegen den Data
+      Lake ausführt. Da ein Agent damit Sicherheitsdaten abfragen kann, lohnt sich die Auditierung seiner
+      Aufrufe: welche Abfrage lief, gegen welchen Workspace und wie weit war der Umfang.
+  asim-agent-schema:
+    summary: >-
+      Das Normalisierungsschema von Microsoft für KI-Agenten-Ereignisse in Sentinel. Es umfasst Modellaufrufe,
+      Werkzeugnutzung, Tokenverbrauch und Agent-zu-Agent-Kommunikation und erlaubt Analysten, Agentenverhalten
+      plattformübergreifend zu korrelieren, ohne jedes proprietäre Format zu lernen.
 diagram:
   analytics_reporting: Analysen & Berichte
   band_data_lake: Microsoft Sentinel Data Lake
@@ -212,20 +222,20 @@ sections:
     heading: Eine neue Angriffsfläche
     body:
     - >-
-      Die Einführung generativer KI im Unternehmen schreitet über Microsoft 365 Copilot, Copilot Studio,
-      Microsoft Foundry, Security Copilot und eigene, an Fachanwendungen angebundene Agenten schnell voran.
-      Einen Agenten unterscheidet von klassischer SaaS, dass er handelt: Er liest Unternehmensdaten, fragt
-      internes Wissen ab, ruft APIs und Werkzeuge auf, führt Abläufe aus und trifft Entscheidungen im
-      Auftrag einer Person.
+      Die Einführung generativer KI im Unternehmen schreitet über {m365-copilot}, {copilot-studio}, {foundry},
+      {security-copilot} und eigene, an Fachanwendungen angebundene Agenten schnell voran. Einen Agenten
+      unterscheidet von klassischer SaaS, dass er handelt: Er liest Unternehmensdaten, fragt interne Wissensspeicher
+      ab, ruft APIs und MCP-Werkzeuge auf, führt Abläufe aus, interagiert mit Geschäftsanwendungen und
+      trifft Entscheidungen im Auftrag einer Person.
     - >-
       Diese Autonomie ist Produktivitätsgewinn und Sicherheitsproblem zugleich. Überwachungsplattformen
       wurden für Benutzer, Geräte, Anwendungen und Infrastruktur entworfen. Ein Agent ist nichts davon
       eindeutig: Er trägt eine Identität, führt zur Laufzeit gewählte Codepfade aus und erreicht Daten
       über Berechtigungen, die ihm ein Mensch erteilt hat.
     bullets:
-    - Prompt Injection, einschließlich Cross-Prompt Injection (XPIA)
-    - Jailbreak- und Umgehungsversuche
-    - Unbefugte oder unerwartete Werkzeugaufrufe
+    - Prompt Injection und Cross-Prompt-Injection-Angriffe (XPIA)
+    - Jailbreak-Versuche und Umgehung von Schutzmechanismen
+    - Unbefugte Werkzeugaufrufe, einschließlich bösartiger MCP-Werkzeugausführung
     - Datenabfluss über die Berechtigungen des Agenten
     - Missbrauch von Agentenidentitäten und übermäßiger Datenzugriff
   architecture:
@@ -234,80 +244,166 @@ sections:
     - >-
       Das Überwachungsmodell hat vier Stufen. KI-Plattformen erzeugen Telemetrie; eine Observability-
       und Sicherheitsschicht macht daraus geregelte, klassifizierte Signale; Datenconnectoren bringen
-      diese Signale nach Microsoft Sentinel; und Sentinel korreliert sie für Hunting, Untersuchung und
-      Reaktion, wobei der Data Lake die nötige Aufbewahrungsdauer liefert.
+      diese Signale nach {sentinel}; und Sentinel korreliert sie für Hunting, Untersuchung und Reaktion,
+      wobei {sentinel-data-lake} die nötige Aufbewahrungsdauer liefert.
     - >-
-      Wählen Sie eine Komponente aus, um zu sehen, was sie tut und wie ihr aktuell dokumentierter Status
-      geprüft wurde.
+      Wählen Sie eine Komponente aus, um zu sehen, was sie tut, welchen dokumentierten Status sie derzeit
+      hat und gegen welche Microsoft-Seite dieser Status gemessen wurde.
   telemetry:
     heading: Telemetriequellen
     body:
     - >-
-      Die Quellen ergänzen einander, statt sich zu doppeln. Laufzeittelemetrie beantwortet, was ein Agent
-      getan hat. Identitätsdaten beantworten, wem er gehört und worauf er zugreifen darf. Copilot-Auditprotokolle
-      beantworten, wie er genutzt wird. Sicherheitssignale beantworten, ob ein Prompt bösartig war. Warnungen
-      und Incidents beantworten, was der Sicherheitsstack daraus geschlossen hat.
+      Die Quellen ergänzen einander, statt sich zu doppeln. {conn-agent-365} liefert das Laufzeitverhalten
+      der Agenten – Prompts, Sitzungs- und Konversationskennungen, Agentenidentitäten, MCP- und Connector-Aufrufe,
+      Werkzeugargumente und -antworten, Anfrage- und Antwortinhalte sowie Ausführungsfehler. Dieser Datenbestand
+      ist die forensische Spur dessen, was ein Agent tatsächlich getan hat.
     - >-
-      Ein SOC braucht alle fünf, um einen Vorfall zu rekonstruieren. Laufzeittelemetrie allein zeigt Aktionen
+      {entra-agent-id} beantwortet dagegen die Governance-Fragen: Wem gehört dieser Agent, welche Berechtigungen
+      hat er, welche Organisationseinheit hat ihn bereitgestellt und welche verwandten Agenten existieren.
+      {copilot-activity} deckt Nutzungsauditierung und Einführungsberichte ab. {cloud-app-events} trägt
+      die KI-Sicherheitsbewertungen. {security-alert} und {security-incident} tragen die Schlussfolgerungen
+      des Sicherheitsstacks.
+    - >-
+      Ein SOC braucht sie alle, um einen Vorfall zu rekonstruieren. Laufzeittelemetrie allein zeigt Aktionen
       ohne Absicht; Sicherheitssignale allein zeigen Absicht ohne Folgen.
   two_tables:
     heading: Die beiden zentralen Tabellen
     body:
     - >-
-      Zwei Datenbestände tragen den größten Teil der Untersuchungslast, und sie beantworten unterschiedliche
-      Fragen. Die eine fragt, ob ein Prompt bösartig war – Prompt-Shield-Bewertungen, Injection- und XPIA-Erkennungen,
-      Jailbreak-Einstufungen. Die andere fragt, was der Agent daraufhin getan hat: welches Werkzeug lief,
-      welcher Connector ausgeführt wurde, welche Argumente übergeben wurden und was zurückkam.
+      Zwei Datenbestände tragen den größten Teil der Untersuchungslast und beantworten unterschiedliche
+      Fragen. {cloud-app-events} befasst sich mit KI-Sicherheit: Wurde Prompt Shield ausgelöst, war dies
+      ein Jailbreak-Versuch, wurde XPIA erkannt, war der Prompt verdächtig. {unified-agent-observability}
+      ist die im Ursprungsartikel genannte Tabelle für das Laufzeitverhalten: Welches Werkzeug wurde aufgerufen,
+      welcher Connector ausgeführt, welche Argumente übergeben, welche Daten zurückgegeben.
     - >-
       Das Bindeglied ist die Sitzungskennung. Sie macht aus einer isolierten Sicherheitsbewertung eine
       Kette von Folgen.
+    - >-
+      Wichtig, bevor Sie darauf aufbauen: {unified-agent-observability} erscheint nicht mehr in der aktuellen
+      Microsoft-Dokumentation, und die Agent-365-Attributreferenz ordnet Observability-Attribute stattdessen
+      dem Feld RawEventData von {cloud-app-events} zu. {asim-agent-schema} ist das derzeit dokumentierte
+      Normalisierungsschema von Microsoft für Agentenereignisse. Prüfen Sie dies im eigenen Tenant, bevor
+      Sie Erkennungen gegen einen Tabellennamen schreiben.
   hunting:
-    heading: Vom Signal zum Verhalten
+    heading: Erkennung von Prompt Injection
     body:
     - >-
       Eine Sicherheitserkennung allein ist noch kein Vorfall. Entscheidend ist, ob ein verdächtiger Prompt
       zu nachgelagerten Aktionen geführt hat. Der Untersuchungsweg hat deshalb immer dieselbe Form: beim
-      Sicherheitssignal beginnen, den Prompt identifizieren, die Sitzung ermitteln, dann in die Laufzeittelemetrie
-      wechseln und lesen, was der Agent tatsächlich ausgeführt hat.
+      Sicherheitssignal beginnen, den Prompt identifizieren, die Sitzung ermitteln, in die Laufzeittelemetrie
+      wechseln und lesen, was tatsächlich ausgeführt wurde.
+    - >-
+      Verdächtige Prompts enthalten wiedererkennbare Manipulationsmuster – Anweisungen, vorherige Anweisungen
+      zu ignorieren, den Systemprompt preiszugeben, in einen Entwicklermodus zu wechseln oder Sicherheitskontrollen
+      zu missachten. Mustererkennung findet Kandidaten; erst der Wechsel in die Laufzeittelemetrie trennt
+      Versuch von Folge.
   forensics:
     heading: Sitzungsrekonstruktion
     body:
     - >-
       Wer eine Sitzung durchgängig korreliert, erhält eine forensische Zeitleiste statt unverbundener
-      Einzelereignisse: den Prompt einer Person, den ausgelösten Agentenaufruf, die aufgerufenen Werkzeuge,
-      die ausgeführten Connectoren und die zurückgegebenen Antworten.
+      Einzelereignisse: den Prompt einer Person, den ausgelösten Agentenaufruf, die Werkzeugaufrufe, die
+      Connector-Aktivität und die zurückgegebenen Antworten.
     - >-
       Das ist zugleich die Grundlage für Governance-Arbeit ohne Vorfallbezug – normales Agentenverhalten
       als Basislinie erfassen, tatsächlich genutzte Werkzeuge inventarisieren und das erste Auftreten
       eines nicht freigegebenen Werkzeugs bemerken.
+  mcp_auditing:
+    heading: Werkzeug- und MCP-Auditierung
+    body:
+    - >-
+      Agenten handeln über Werkzeuge, deshalb treffen sich Governance und Erkennung beim Werkzeugaufruf.
+      Die Überwachung umfasst Graph-API-Werkzeuge, SharePoint- und ServiceNow-Connectoren, eigene Unternehmenswerkzeuge
+      und {sentinel-mcp-tools}. Für jeden Aufruf sind die nützlichen Fragen dieselben: Welches Werkzeug
+      wurde genutzt, wer hat es ausgelöst, welche Parameter wurden übergeben und welche Daten kamen zurück.
+    - >-
+      {sentinel-mcp-tools} und RunAdvancedHuntingQuery verdienen besondere Aufmerksamkeit, da ein Agent
+      damit Sicherheitsdaten direkt abfragen kann. Ihre Auditierung zeigt das tatsächlich übermittelte
+      KQL, die Zielworkspaces, die berührten Datenquellen und den Zugriffsumfang – also Einblick in die
+      KI-gestützte Untersuchung selbst.
+    bullets:
+    - >-
+      Erkennung neuer Werkzeuge – nicht autorisierte MCP-Server, neu registrierte Connectoren, nicht freigegebene
+      Werkzeuge und unerwartete Integrationen
+    - >-
+      Überwachung von Werkzeugfehlern – Berechtigungsfehler, Connector-Fehler und Zugriffsverweigerungen;
+      ein plötzlicher Anstieg kann auf Aufklärung, Fehlkonfiguration oder Rechtemissbrauch hindeuten
+  sensitive_data:
+    heading: Zugriff auf sensible Daten
+    body:
+    - >-
+      Dieselbe Telemetrie zeigt, welche Daten ein Agent erreicht hat. Die Überwachung der Interaktion
+      mit Personaldaten, Kundendaten, Finanzinformationen, SharePoint-Ablagen und HR-Datenbanken macht
+      Exfiltrationsversuche, übermäßige Zugriffsmuster und die Offenlegung sensibler Daten sichtbar.
+    - >-
+      {purview} deckt die Compliance-Seite derselben Aktivität ab, sodass Governance und Sicherheitsuntersuchung
+      auf einer Beweisgrundlage aufsetzen statt auf zweien.
   detection:
     heading: Detection Engineering
     body:
     - >-
-      Dieselbe Telemetrie trägt Analyseregeln. Sinnvolle Erkennungen gruppieren sich um wenige Themen:
-      Prompt-Manipulation, Umgehung von Schutzmechanismen, neue oder seltene Werkzeugnutzung, ungewöhnlicher
-      Zugriff auf sensible Daten sowie Änderungen an Agentenidentitäten, etwa ein Wechsel der Zuständigkeit
-      oder Aktivität außerhalb des etablierten Musters.
+      Dieselbe Telemetrie trägt Analyseregeln in {sentinel}. Sinnvolle Erkennungen gruppieren sich um
+      wenige Themen, und Seltenheit ist dabei oft aussagekräftiger als Menge: Ein Werkzeug, das ein Agent
+      zum ersten Mal überhaupt aufruft, verdient mehr Aufmerksamkeit als ein vielbeschäftigter Connector,
+      der sich verhält wie immer.
+    bullets:
     - >-
-      Seltenheit ist hier oft aussagekräftiger als Menge. Ein Werkzeug, das ein Agent zum ersten Mal überhaupt
-      aufruft, verdient mehr Aufmerksamkeit als ein vielbeschäftigter Connector, der sich verhält wie
-      immer.
+      Prompt Injection – Prompts für den Entwicklermodus, Override-Versuche, Aufforderungen zur Preisgabe
+      des Systemprompts
+    - Jailbreak-Versuche – Umgehung von Schutzmechanismen, Rollenmanipulation, Override-Muster
+    - >-
+      Unbefugte Werkzeugnutzung – neue MCP-Werkzeuge, risikoreiche Connectoren, seltene Werkzeugausführungen
+    - >-
+      Zugriff auf sensible Daten – HR-Abfragen, Abruf von Identitätsinformationen, Exporte großen Umfangs
+    - >-
+      Missbrauch von Agentenidentitäten – Wechsel der Zuständigkeit, unerwartete Aktivität, Auffälligkeiten
+      zwischen Agenten
   analytics:
     heading: Langfristige Analyse
     body:
     - >-
-      Da Agenten-Telemetrie im Data Lake aufbewahrt werden kann, ist die Untersuchung nicht auf ein kurzes
-      heißes Zeitfenster beschränkt. Das ermöglicht historische Analysen von KI-Angriffen, Verhaltens-Baselines,
-      Werkzeuginventare und Einführungstrends – und es bedeutet, dass das Verhalten eines Agenten von
-      vor sechs Monaten noch verfügbar ist, wenn die Frage danach endlich gestellt wird.
+      Da Agenten-Telemetrie in {sentinel-data-lake} aufbewahrt werden kann, ist die Untersuchung nicht
+      auf ein kurzes heißes Zeitfenster beschränkt. Das ermöglicht langfristige KI-Untersuchungen, historische
+      Angriffsanalysen, Baselining von Agenten, Governance-Berichte, Trendanalysen und Werkzeuginventare
+      – und es bedeutet, dass das Verhalten eines Agenten von vor sechs Monaten noch verfügbar ist, wenn
+      die Frage danach endlich gestellt wird.
+    bullets:
+    - Häufigste Prompt-Injection-Versuche
+    - Aktivste Agenten
+    - Risikoreiche MCP-Werkzeuge
+    - Analyse der Agenten-Zuständigkeiten
+    - KI-Sicherheitsvorfälle
+    - Trends beim Zugriff auf sensible Daten
   integration_path:
     heading: Integrationsweg
     body:
     - >-
       Für Teams, die eigene Agenten instrumentieren, hat sich der empfohlene Weg verschoben. Microsoft
-      verweist neue Integrationen inzwischen auf die eigene OpenTelemetry-Distribution, die ein einheitliches
-      Observability-SDK für Agent 365, Foundry und Azure Monitor bereitstellt. Das frühere SDK funktioniert
-      weiterhin ohne Breaking Changes, ist aber nicht mehr der empfohlene Ausgangspunkt.
+      verweist neue Integrationen inzwischen auf {ms-otel-distro}, die ein einheitliches Observability-SDK
+      für Agent 365, Foundry und Azure Monitor bereitstellt. {a365-observability-sdk} funktioniert weiterhin
+      ohne Breaking Changes, ist aber nicht mehr der empfohlene Ausgangspunkt, und {a365-attribute-reference}
+      legt fest, welche Attribute je Operation verpflichtend sind.
     - >-
       Das zeigt gut, warum sich diese Seite selbst überprüft: Diese Änderung erfolgte nach dem Artikel,
       aus dem sie abgeleitet ist.
+  summary:
+    heading: Zusammenfassung
+    body:
+    - >-
+      KI-Agenten werden zu einer bedeutenden Computing-Plattform und bringen eine Angriffsfläche mit,
+      für die bestehende Überwachung nicht entworfen wurde. Ihre Absicherung erfordert Sichtbarkeit über
+      Benutzerinteraktionen, Ausführungspfade der Agenten, Werkzeugnutzung, Prompt-Sicherheitssignale,
+      Agentenidentitäten und Sicherheitserkennungen hinweg.
+    - >-
+      {sentinel} liefert diese einheitliche Sicht, indem es KI-Laufzeittelemetrie mit KI-Sicherheitssignalen
+      und Defender-Erkennungen verbindet. So können Sicherheitsteams über klassische Überwachung hinausgehen
+      – hin zu Threat Hunting, Incident Response, Governance und forensischer Untersuchung über {m365-copilot},
+      {copilot-studio}, {foundry} und künftige Agenten-Ökosysteme.
+    - >-
+      Jede Produktaussage auf dieser Seite wird planmäßig erneut gegen die Microsoft-Dokumentation gemessen.
+      Wo Artikel und aktuelle Microsoft-Dokumentation auseinandergehen, zeigt die Tabelle unten, was gemessen
+      wurde und wann.
+    links:
+    - label: Agent-365-Observability-Hunting-Guide (Community)
+      url: >-
+        https://github.com/SCStelz/security-investigator/blob/main/queries/cloud/agent365_observability.md

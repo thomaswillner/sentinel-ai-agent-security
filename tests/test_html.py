@@ -63,3 +63,32 @@ def test_refuses_to_publish_an_unknown_state():
     from sasb.verdicts import Verdict, assert_publishable
     with pytest.raises(ValueError, match="not a known state"):
         assert_publishable([Verdict.CURRENT, Verdict.NOT_FOUND])
+
+
+def test_unresolvable_token_fails_the_build():
+    import pytest
+    from sasb.build.html import assert_tokens_resolve
+    ents = {e.id: e for e in load_entities(Path("model/entities.yaml"))}
+    poisoned = {"en": {"sections": {"intro": {"body": ["See {no-such-product} today."]}}}}
+    with pytest.raises(ValueError, match="unresolvable entity tokens"):
+        assert_tokens_resolve(poisoned, ents)
+
+
+def test_prose_is_bound_to_the_model_not_hardcoded():
+    """A rename in entities.yaml must move the prose with it."""
+    from sasb.build.html import resolve_tokens
+    ents = {e.id: e for e in load_entities(Path("model/entities.yaml"))}
+    assert resolve_tokens("built on {foundry}", ents) == "built on Microsoft Foundry"
+    html = _render()
+    # The article's wording must not be hardcoded into the body prose.
+    assert "Azure AI Foundry Agents" not in html.split('class="recon"')[0]
+
+
+def test_covers_the_source_article_specifics():
+    """Regression guard: the brief must not silently thin out the post."""
+    html = _render()
+    for term in ("query_lake", "RunAdvancedHuntingQuery", "ServiceNow", "SharePoint",
+                 "Graph API", "MCP", "developer mode", "system prompt",
+                 "Most active agents", "High-risk MCP tools",
+                 "Agent ownership analysis", "SCStelz"):
+        assert term.lower() in html.lower(), f"article specific missing: {term}"

@@ -213,3 +213,23 @@ entities:
     Observability SDK deprecation_probe:
       url: https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts
       phrase: no longer the recommended path for new integrations
+- id: sentinel-mcp-tools
+  name: query_lake
+  kind: integration
+  learn_url: >-
+    https://learn.microsoft.com/en-us/azure/sentinel/datalake/sentinel-mcp-data-exploration-tool
+  expected_status: ga
+  summary: >-
+    The Sentinel MCP data-exploration tool that runs KQL against the data lake on an agent's behalf. Because
+    an agent can use it to query security data, its own invocations are worth auditing: which query ran,
+    against which workspace, and how wide the scope was.
+- id: asim-agent-schema
+  name: ASIM Agent Event
+  kind: table
+  learn_url: https://learn.microsoft.com/en-us/azure/sentinel/normalization-schema-agent
+  match_text: Agent Event
+  expected_status: ga
+  summary: >-
+    Microsoft's normalization schema for AI agent events in Sentinel, covering model invocations, tool
+    usage, token consumption and agent-to-agent communication. It lets analysts correlate agent behaviour
+    across platforms without learning each vendor's proprietary format.

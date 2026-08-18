@@ -22,11 +22,11 @@
     "source_url": "https://techcommunity.microsoft.com/blog/coreinfrastructureandsecurityblog/securing-enterprise-ai-agents-with-microsoft-sentinel/4542583",
     "subject": "Securing Enterprise AI Agents with Microsoft Sentinel"
   },
-  "checked_at": "2026-08-18T20:52:03Z",
+  "checked_at": "2026-08-18T21:00:56Z",
   "entities": [
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -44,7 +44,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "documented at https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts: 'no longer the recommended path for new integrations'"
       ],
@@ -62,7 +62,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -80,7 +80,25 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/normalization-schema-agent",
+      "fingerprint": "f78ccd166d47cce3",
+      "id": "asim-agent-schema",
+      "kind": "table",
+      "name": "ASIM Agent Event",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/azure/sentinel/normalization-schema-agent",
+        "en": "https://learn.microsoft.com/en-us/azure/sentinel/normalization-schema-agent"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -98,7 +116,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -116,7 +134,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -134,7 +152,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -152,7 +170,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -170,7 +188,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -188,7 +206,7 @@
     },
     {
       "article_name": "Defender for AI",
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -206,7 +224,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -224,7 +242,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -242,7 +260,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -260,7 +278,7 @@
     },
     {
       "article_name": "Azure AI Foundry Agents",
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -278,7 +296,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -296,7 +314,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -314,7 +332,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -332,7 +350,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -350,7 +368,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -368,7 +386,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -386,7 +404,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -404,7 +422,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -422,7 +440,25 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-18T20:52:03Z",
+      "checked_at": "2026-08-18T21:00:56Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/datalake/sentinel-mcp-data-exploration-tool",
+      "fingerprint": "7882691970a7d144",
+      "id": "sentinel-mcp-tools",
+      "kind": "integration",
+      "name": "query_lake",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/azure/sentinel/datalake/sentinel-mcp-data-exploration-tool",
+        "en": "https://learn.microsoft.com/en-us/azure/sentinel/datalake/sentinel-mcp-data-exploration-tool"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T21:00:56Z",
       "evidence": [
         "'UnifiedAgentObservability' does not appear in current Microsoft documentation; the article's wording no longer matches what Microsoft documents"
       ],
@@ -442,7 +478,7 @@
   "schema_version": 1,
   "summary": {
     "CHANGED": 1,
-    "CURRENT": 21,
+    "CURRENT": 23,
     "DEPRECATED": 1
   }
 }

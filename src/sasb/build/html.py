@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import html
 import json
+import re
 from pathlib import Path
 
 import yaml
@@ -46,6 +47,40 @@ def _ui(loc: dict, key: str) -> str:
 
 def _section(loc: dict, sid: str) -> dict:
     return (loc.get("sections") or {}).get(sid, {})
+
+
+_TOKEN_RE = re.compile(r"\{([a-z0-9-]+)\}")
+
+
+def resolve_tokens(text: str, entities: dict[str, Entity]) -> str:
+    """Replace {entity-id} with the entity's current name.
+
+    Prose is bound to the model for the same reason the diagram is: when
+    Microsoft renames something, the sentences have to move with it. Writing
+    "Azure AI Foundry" into a paragraph would leave the text stale while the
+    figure and the status table had already updated.
+    """
+    def sub(match: re.Match) -> str:
+        entity = entities.get(match.group(1))
+        return entity.name if entity else match.group(0)
+
+    return _TOKEN_RE.sub(sub, text)
+
+
+def _linked(text: str, entities: dict[str, Entity]) -> str:
+    """Escape prose, then make each {entity-id} token open its lightbox."""
+    parts, last = [], 0
+    for match in _TOKEN_RE.finditer(text):
+        parts.append(_e(text[last:match.start()]))
+        entity = entities.get(match.group(1))
+        if entity is None:
+            parts.append(_e(match.group(0)))
+        else:
+            parts.append(f'<a class="ent" role="button" tabindex="0" '
+                         f'data-entity="{_e(entity.id)}">{_e(entity.name)}</a>')
+        last = match.end()
+    parts.append(_e(text[last:]))
+    return "".join(parts)
 
 
 def _entity_payload(entities: dict[str, Entity], recon: dict,
@@ -108,10 +143,14 @@ def _sections_html(content: dict, entities: dict[str, Entity], figures: dict[str
         sec = _section(loc, sid)
         parts = [f'<section id="{_e(sid)}-{loc_name}"><h2>{_e(sec.get("heading", sid))}</h2>']
         for paragraph in sec.get("body", []):
-            parts.append(f"<p>{_e(paragraph)}</p>")
+            parts.append(f"<p>{_linked(paragraph, entities)}</p>")
         if sec.get("bullets"):
             parts.append("<ul>" + "".join(
-                f"<li>{_e(item)}</li>" for item in sec["bullets"]) + "</ul>")
+                f"<li>{_linked(item, entities)}</li>" for item in sec["bullets"]) + "</ul>")
+        if sec.get("links"):
+            parts.append('<ul class="refs">' + "".join(
+                f'<li><a href="{_e(link["url"])}" target="_blank" rel="noopener">'
+                f'{_e(link["label"])}</a></li>' for link in sec["links"]) + "</ul>")
         if spec.get("figure"):
             parts.append(_figure_block(figures[spec["figure"]], entities, loc, loc_name))
         parts.append("</section>")
@@ -208,6 +247,7 @@ table.recon{border-collapse:collapse;width:100%;font-size:14px;min-width:780px}
 .recon th{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
 .recon tr:last-child td{border-bottom:0}
 .recon .ev{color:var(--muted);max-width:38ch}
+.refs{margin:10px 0}
 .alt{color:var(--muted)}
 .badge{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;
  font-weight:600;white-space:nowrap}
@@ -216,6 +256,9 @@ table.recon{border-collapse:collapse;width:100%;font-size:14px;min-width:780px}
 .b-renamed{background:var(--warn-bg);color:var(--warn)}
 .b-deprecated{background:var(--dep-bg);color:var(--dep)}
 .node:hover .card,.node:focus-visible .card{stroke:var(--accent);stroke-width:2}
+a.ent{color:var(--accent);cursor:pointer;text-decoration:underline;
+ text-decoration-style:dotted;text-underline-offset:3px}
+a.ent:hover,a.ent:focus-visible{text-decoration-style:solid}
 dialog.lb{border:1px solid var(--line);border-radius:16px;padding:0;max-width:min(680px,92vw);
  background:var(--panel);color:var(--ink);box-shadow:var(--shadow)}
 dialog.lb.wide{max-width:96vw;width:96vw}
@@ -299,12 +342,12 @@ JS = """
     +'<button class="x" type="button" data-close aria-label="'+esc(t.close)
     +'">&times;</button></div><div class="lb-fig">'
     +fig.querySelector('.fig-canvas').innerHTML+'</div></div>',true);return;}
-  var node=ev.target.closest('.node[data-entity]');
+  var node=ev.target.closest('[data-entity]');
   if(node){detail(node.getAttribute('data-entity'));}
  });
  document.addEventListener('keydown',function(ev){
   if(ev.key!=='Enter'&&ev.key!==' ')return;
-  var node=ev.target.closest&&ev.target.closest('.node[data-entity]');
+  var node=ev.target.closest&&ev.target.closest('[data-entity]');
   if(node){ev.preventDefault();detail(node.getAttribute('data-entity'));}
  });
  dlg.addEventListener('click',function(ev){if(ev.target===dlg){dlg.close();}});
@@ -312,9 +355,28 @@ JS = """
 """
 
 
+def assert_tokens_resolve(locales: dict[str, dict], entities: dict[str, Entity]) -> None:
+    """Every {entity-id} in prose must name a real entity.
+
+    An unresolved token would print literal braces on the page, and worse, would
+    mean a product reference that no longer tracks the model.
+    """
+    unknown = set()
+    for name, loc in sorted(locales.items()):
+        for sid, section in sorted((loc.get("sections") or {}).items()):
+            for text in section.get("body", []) + section.get("bullets", []):
+                unknown |= {
+                    f"{name}/{sid}:{tok}" for tok in _TOKEN_RE.findall(text)
+                    if tok not in entities
+                }
+    if unknown:
+        raise ValueError(f"unresolvable entity tokens in prose: {sorted(unknown)}")
+
+
 def render_html(content: dict, entities: dict[str, Entity], figures: list[Figure],
                 recon: dict, locales: dict[str, dict]) -> str:
     assert_publishable([Verdict(r["verdict"]) for r in recon["entities"]])
+    assert_tokens_resolve(locales, entities)
     fig_map = {f.id: f for f in figures}
     art = recon["article"]
 

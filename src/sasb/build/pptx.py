@@ -16,7 +16,7 @@ from pptx.util import Emu, Inches, Pt
 
 from ..i18n import LOCALES, load_locale
 from ..model import Entity, load_entities
-from .html import AVAIL_LABEL, VERDICT_LABEL, _ui, load_content
+from .html import AVAIL_LABEL, VERDICT_LABEL, _ui, load_content, resolve_tokens
 from .svg import load_diagrams
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -81,14 +81,14 @@ def _title_slide(prs, loc, recon):
              size=13, color=ACCENT)
 
 
-def _section_slide(prs, loc, sid):
+def _section_slide(prs, loc, sid, entities):
     section = (loc.get("sections") or {}).get(sid, {})
     slide = _blank(prs)
     _textbox(slide, Inches(0.8), Inches(0.5), Inches(11.7), Inches(0.9),
              section.get("heading", sid), size=30, bold=True)
-    items = list(section.get("body", []))
+    items = [resolve_tokens(t, entities) for t in section.get("body", [])]
     if section.get("bullets"):
-        items += [f"• {b}" for b in section["bullets"]]
+        items += [f"• {resolve_tokens(b, entities)}" for b in section["bullets"]]
     _bullets(slide, Inches(0.8), Inches(1.6), Inches(11.7), Inches(5.4), items,
              size=15 if len(items) > 2 else 17)
 
@@ -156,7 +156,7 @@ def render(content: dict, entities: dict[str, Entity], figures, recon: dict,
     _title_slide(prs, loc, recon)
     fig_ids = {f.id for f in figures}
     for spec in content["sections"]:
-        _section_slide(prs, loc, spec["id"])
+        _section_slide(prs, loc, spec["id"], entities)
         figure_id = spec.get("figure")
         if figure_id and figure_id in fig_ids:
             png = dist / f"{figure_id}.{locale}@4x.png"

@@ -124,20 +124,20 @@ sections:
     heading: A new attack surface
     body:
     - >-
-      Enterprise adoption of generative AI is moving quickly through Microsoft 365 Copilot, Copilot Studio,
-      Microsoft Foundry, Security Copilot and custom agents wired into line-of-business systems. What
-      separates an agent from a conventional SaaS application is that it acts: it reads enterprise data,
-      queries internal knowledge, calls APIs and tools, runs workflows and makes decisions on someone's
-      behalf.
+      Enterprise adoption of generative AI is moving quickly through {m365-copilot}, {copilot-studio},
+      {foundry}, {security-copilot} and custom agents wired into line-of-business systems. What separates
+      an agent from a conventional SaaS application is that it acts: it reads enterprise data, queries
+      internal knowledge repositories, invokes APIs and MCP tools, runs workflows, interacts with business
+      applications and makes decisions on someone's behalf.
     - >-
       That autonomy is the productivity gain and the security problem at once. Monitoring platforms were
       built around users, devices, applications and infrastructure. An agent is none of those cleanly
-      -- it carries an identity, executes code paths chosen at runtime, and reaches data through permissions
+      — it carries an identity, executes code paths chosen at runtime, and reaches data through permissions
       a human granted it.
     bullets:
-    - Prompt injection, including cross-prompt injection (XPIA)
-    - Jailbreak and safety-bypass attempts
-    - Unauthorised or unexpected tool invocation
+    - Prompt injection, and cross prompt injection attacks (XPIA)
+    - Jailbreak attempts and safety-control bypass
+    - Unauthorised tool invocation, including malicious MCP tool execution
     - Data exfiltration through an agent's own permissions
     - Agent identity abuse and excessive data access
   architecture:
@@ -146,78 +146,159 @@ sections:
     - >-
       The monitoring model has four stages. AI platforms produce telemetry; an observability and security
       layer turns raw activity into governed, classified signals; data connectors carry those signals
-      into Microsoft Sentinel; and Sentinel correlates them for hunting, investigation and response, with
-      the data lake providing retention long enough for the analysis to be meaningful.
+      into {sentinel}; and Sentinel correlates them for hunting, investigation and response, with {sentinel-data-lake}
+      providing retention long enough for the analysis to be meaningful.
     - >-
-      Select any component below to see what it does and how its current documented status was verified.
+      Select any component to see what it does, its current documented status, and the Microsoft page
+      that status was measured against.
   telemetry:
     heading: Telemetry sources
     body:
     - >-
-      The sources complement rather than duplicate each other. Runtime telemetry answers what an agent
-      did. Identity data answers who owns it and what it may reach. Copilot audit logs answer how it is
-      being used. Safety signals answer whether a prompt was hostile. Alerts and incidents answer what
-      the security stack concluded.
+      The sources complement rather than duplicate each other. {conn-agent-365} carries agent runtime
+      behaviour — prompts, session and conversation identifiers, agent identities, MCP and connector invocations,
+      tool arguments and responses, request and response payloads, and execution errors. That dataset
+      is the forensic trail of what an agent actually did.
     - >-
-      A SOC needs all five to reconstruct an incident. Runtime telemetry alone shows actions without intent;
-      safety signals alone show intent without consequences.
+      {entra-agent-id} answers the governance questions instead: who owns this agent, what permissions
+      it holds, which business unit deployed it and which related agents exist. {copilot-activity} covers
+      usage auditing and adoption reporting. {cloud-app-events} carries the AI safety verdicts. {security-alert}
+      and {security-incident} carry what the security stack concluded.
+    - >-
+      A SOC needs all of them to reconstruct an incident. Runtime telemetry alone shows actions without
+      intent; safety signals alone show intent without consequences.
   two_tables:
     heading: The two central tables
     body:
     - >-
-      Two datasets carry most investigative weight, and they answer different questions. One asks whether
-      a prompt was malicious -- prompt shield verdicts, injection and XPIA detections, jailbreak classifications.
-      The other asks what the agent then did -- which tool ran, which connector executed, what arguments
-      were passed, what came back.
+      Two datasets carry most of the investigative weight, and they answer different questions. {cloud-app-events}
+      focuses on AI safety: was Prompt Shield triggered, was this a jailbreak attempt, was XPIA detected,
+      was the prompt suspicious. {unified-agent-observability} is the table the source article names for
+      agent runtime behaviour: which tool was invoked, which connector executed, what arguments were passed,
+      what data was returned, what the agent performed.
     - >-
       The pivot between them is the session identifier, and it is what turns an isolated safety verdict
       into a chain of consequences.
+    - >-
+      Worth knowing before you build on it: {unified-agent-observability} no longer appears in Microsoft's
+      current documentation, and the Agent 365 attribute reference maps observability attributes into
+      the RawEventData field of {cloud-app-events} instead. {asim-agent-schema} is Microsoft's current
+      documented normalization schema for agent events. Verify against your own tenant before writing
+      detections against a table name.
   hunting:
-    heading: From signal to behaviour
+    heading: Prompt injection detection
     body:
     - >-
       A safety detection on its own is not an incident. The question that matters is whether a suspicious
-      prompt produced downstream action. The investigation path is therefore always the same shape: start
-      at the safety signal, identify the prompt, obtain the session, then pivot into runtime telemetry
-      and read what the agent actually executed.
+      prompt produced downstream action, so the investigation path always has the same shape: start at
+      the safety signal, identify the prompt, obtain the session, pivot into agent runtime telemetry,
+      and read what actually executed.
+    - >-
+      Prompts worth hunting for contain recognisable manipulation patterns — instructions to ignore previous
+      instructions, to reveal the system prompt, to enter developer mode, or to disregard safety controls.
+      Pattern matching finds candidates; the pivot into runtime telemetry is what separates an attempt
+      from a consequence.
   forensics:
     heading: Session reconstruction
     body:
     - >-
       Correlating a session end to end produces a forensic timeline rather than a set of disconnected
-      events: the prompt a user submitted, the agent invocation it triggered, the tools called, the connectors
-      that executed and the responses returned.
+      events: the prompt a user submitted, the agent invocation it triggered, the tool calls, the connector
+      activity and the responses returned.
     - >-
-      This is also the basis for governance work that has nothing to do with incidents -- baselining normal
+      This is also the basis for governance work that has nothing to do with incidents — baselining normal
       agent behaviour, inventorying which tools are genuinely in use, and noticing the first appearance
       of one that is not approved.
+  mcp_auditing:
+    heading: Tool and MCP auditing
+    body:
+    - >-
+      Agents act through tools, so tool invocation is where governance and detection meet. Monitoring
+      covers Graph API tools, SharePoint and ServiceNow connectors, custom enterprise tools and {sentinel-mcp-tools}.
+      For each invocation the useful questions are the same: which tool was used, who triggered it, what
+      parameters were supplied and what data came back.
+    - >-
+      {sentinel-mcp-tools} and RunAdvancedHuntingQuery deserve particular attention, because they let
+      an agent query security data directly. Auditing them shows the actual KQL submitted, the target
+      workspaces, the data sources touched and the scope of access — visibility into AI-driven investigation
+      itself.
+    bullets:
+    - >-
+      New tool detection — unauthorised MCP servers, newly registered connectors, unapproved tools and
+      unexpected integrations
+    - >-
+      Tool failure monitoring — permission failures, connector errors and access-denied responses, where
+      a sudden rise can indicate reconnaissance, misconfiguration or privilege abuse
+  sensitive_data:
+    heading: Sensitive data access
+    body:
+    - >-
+      The same telemetry shows which data an agent reached. Monitoring agent interaction with employee
+      records, customer data, financial information, SharePoint repositories and HR databases surfaces
+      exfiltration attempts, excessive access patterns and sensitive data exposure.
+    - >-
+      {purview} covers the compliance side of the same activity, so governance and security investigation
+      draw on one body of evidence rather than two.
   detection:
     heading: Detection engineering
     body:
     - >-
-      The same telemetry supports analytics rules. Useful detections cluster around a few themes: prompt
-      manipulation, safety bypass, tool usage that is new or rare, sensitive-data access that is unusual
-      in volume or subject, and agent identity changes such as ownership moving or an agent acting outside
-      its established pattern.
+      The same telemetry supports analytics rules in {sentinel}. Useful detections cluster around a few
+      themes, and rarity is often a stronger signal than volume: a tool invoked once, by an agent that
+      has never invoked it, deserves more attention than a busy connector behaving as it always has.
+    bullets:
     - >-
-      Rarity is often a stronger signal than volume here. A tool invoked once, by an agent that has never
-      invoked it, is worth more attention than a busy connector behaving as it always has.
+      Prompt injection — developer-mode prompts, prompt override attempts, system prompt disclosure requests
+    - Jailbreak attempts — safety bypass, role manipulation, instruction override patterns
+    - Unauthorised tool usage — new MCP tools, high-risk connectors, rare tool executions
+    - >-
+      Sensitive data access — HR data queries, identity information retrieval, large-volume exports
+    - >-
+      Agent identity abuse — ownership changes, unexpected agent activity, agent-to-agent anomalies
   analytics:
     heading: Long-term analysis
     body:
     - >-
-      Because agent telemetry can be retained in the data lake, investigation is not limited to a short
-      hot window. That enables historical analysis of AI attacks, behavioural baselining, tool inventory
-      reporting and adoption trends -- and it means an agent's behaviour six months ago is still available
-      when a question about it finally gets asked.
+      Because agent telemetry can be retained in {sentinel-data-lake}, investigation is not limited to
+      a short hot window. That enables long-term AI investigations, historical attack analysis, agent
+      baselining, governance reporting, trend analysis and tool inventory reporting — and it means an
+      agent's behaviour six months ago is still available when a question about it finally gets asked.
+    bullets:
+    - Top prompt injection attempts
+    - Most active agents
+    - High-risk MCP tools
+    - Agent ownership analysis
+    - AI security incidents
+    - Sensitive data access trends
   integration_path:
     heading: Integration path
     body:
     - >-
       For teams instrumenting their own agents, the recommended path has moved. Microsoft now directs
-      new integrations to its OpenTelemetry distribution, which provides one observability SDK across
-      Agent 365, Foundry and Azure Monitor. The earlier SDK continues to work without breaking changes,
-      but is no longer the recommended starting point.
+      new integrations to {ms-otel-distro}, which provides one observability SDK across Agent 365, Foundry
+      and Azure Monitor. {a365-observability-sdk} continues to work without breaking changes, but is no
+      longer the recommended starting point, and {a365-attribute-reference} defines which attributes are
+      mandatory per operation.
     - >-
       This is a good illustration of why this page re-checks itself: that change post-dates the article
       it derives from.
+  summary:
+    heading: Summary
+    body:
+    - >-
+      AI agents are becoming a major computing platform, and they bring an attack surface that existing
+      monitoring was not designed for. Securing them requires visibility across user interactions, agent
+      execution paths, tool usage, prompt safety signals, agent identities and security detections.
+    - >-
+      {sentinel} provides that unified view by combining AI runtime telemetry with AI safety signals and
+      Defender detections — letting security teams move beyond traditional monitoring toward threat hunting,
+      incident response, governance and forensic investigation across {m365-copilot}, {copilot-studio},
+      {foundry} and future agent ecosystems.
+    - >-
+      Every product claim on this page is re-measured against Microsoft's documentation on a schedule.
+      Where the article and Microsoft's current documentation disagree, the table below shows what was
+      measured and when.
+    links:
+    - label: Agent 365 observability hunting guide (community)
+      url: >-
+        https://github.com/SCStelz/security-investigator/blob/main/queries/cloud/agent365_observability.md
