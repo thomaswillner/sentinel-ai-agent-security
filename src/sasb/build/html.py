@@ -282,11 +282,15 @@ dialog.lb::backdrop{background:rgba(8,12,22,.62)}
 .lb .warn{color:var(--warn);font-size:13px;margin-top:8px}
 .lb .x{border:1px solid var(--line);background:transparent;color:var(--ink);
  border-radius:999px;width:34px;height:34px;font-size:18px;cursor:pointer;flex:none}
+/* The figure is a flex item, so flex-shrink pulls it back to the container
+   width whatever width is set -- flex:none is what makes zoom actually zoom.
+   The SVG viewBox handles letterboxing, so width+height 100% fits without
+   distortion. */
 .lb-fig{padding:8px;height:calc(100vh - 66px);display:flex;align-items:center;
  justify-content:center;overflow:auto;cursor:zoom-in}
-.lb-fig svg{width:auto;height:auto;max-width:100%;max-height:100%}
+.lb-fig svg{width:100%;height:100%;flex:none}
 .lb-fig.zoom{align-items:flex-start;justify-content:flex-start;cursor:zoom-out}
-.lb-fig.zoom svg{max-width:none;max-height:none;width:220%}
+.lb-fig.zoom svg{width:220%;height:auto;flex:none}
 footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);
  color:var(--muted);font-size:13px}
 [data-langroot]{display:none}

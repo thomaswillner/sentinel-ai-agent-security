@@ -118,3 +118,7 @@ def test_enlarged_figure_uses_the_whole_viewport():
     flat = CSS.replace(" ", "").replace("\n", "")
     assert "width:100vw" in flat and "height:100vh" in flat, "wide dialog is not full-viewport"
     assert "max-width:none" in flat, "wide dialog still capped by max-width"
+    # A flex item shrinks back to the container regardless of the width set on
+    # it, so without flex:none the zoom silently does nothing.
+    assert ".lb-figsvg{width:100%;height:100%;flex:none}" in flat, "figure will shrink to fit"
+    assert ".lb-fig.zoomsvg{width:220%;height:auto;flex:none}" in flat, "zoom will not zoom"
