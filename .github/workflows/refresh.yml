@@ -1,0 +1,111 @@
+name: refresh
+on:
+  schedule: [{ cron: "0 6 * * *" }]
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+  issues: write
+
+concurrency:
+  group: refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.11" }
+      - name: System renderers
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y librsvg2-bin tesseract-ocr chromium-browser
+      - run: pip install -e ".[dev]"
+
+      # Sweep exit codes: 0 all current | 2 drift needs review | 3 inconclusive
+      # | 4 gate failure (an entity could not be resolved to a known state).
+      - name: Sweep Microsoft sources
+        id: sweep
+        run: |
+          set +e
+          python3 -m sasb.reconcile 2>&1 | tee sweep.log
+          echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Refuse to publish an inconclusive sweep
+        if: steps.sweep.outputs.code == '3'
+        run: |
+          echo "::error::A source was unreachable. Publishing now would assert a"
+          echo "::error::currency the sweep did not measure."
+          exit 1
+
+      - name: Refuse to publish an unresolved entity
+        if: steps.sweep.outputs.code == '4'
+        run: |
+          echo "::error::An entity resolved to no known state. Re-pin it in"
+          echo "::error::model/entities.yaml before this can publish."
+          exit 1
+
+      - name: Build
+        run: |
+          python3 -m sasb.build.html
+          python3 -m sasb.build.raster
+          python3 -m sasb.build.pdf
+          python3 -m sasb.build.pptx
+        env:
+          CHROME_BIN: /usr/bin/chromium-browser
+
+      - name: Gates
+        run: |
+          pytest -q
+          python3 -m sasb.gates.links
+
+      - name: Determinism gate
+        run: |
+          shasum -a 256 dist/index.html dist/*.svg | sort > /tmp/a
+          python3 -m sasb.build.html
+          shasum -a 256 dist/index.html dist/*.svg | sort > /tmp/b
+          diff /tmp/a /tmp/b && echo "byte-identical"
+
+      - name: Commit refreshed state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/
+          git diff --cached --quiet || git commit -m "chore: refresh reconciliation"
+          git push || true
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: dist }
+      - id: deploy
+        uses: actions/deploy-pages@v4
+
+      - name: Open an issue when drift needs review
+        if: steps.sweep.outputs.code == '2'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const log = fs.readFileSync('sweep.log', 'utf8');
+            const today = new Date().toISOString().slice(0, 10);
+            const { data } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', labels: 'drift',
+            });
+            const title = `Drift detected ${today}`;
+            if (data.some(i => i.title === title)) return;
+            await github.rest.issues.create({
+              owner: context.repo.owner, repo: context.repo.repo, title,
+              body: "The sweep found documentation drift. Review and update the model.\n\n```\n"
+                    + log + "\n```",
+              labels: ['drift'],
+            });

@@ -1,0 +1,65 @@
+import json
+from pathlib import Path
+
+from sasb.build.html import load_content, render_html
+from sasb.build.svg import load_diagrams
+from sasb.i18n import LOCALES, load_locale
+from sasb.model import load_entities
+
+RECON = json.loads(Path("state/reconciliation.json").read_text(encoding="utf-8"))
+
+
+def _render() -> str:
+    return render_html(
+        load_content(Path("model/content.yaml")),
+        {e.id: e for e in load_entities(Path("model/entities.yaml"))},
+        load_diagrams(Path("model/diagram.yaml")),
+        RECON,
+        {name: load_locale(name) for name in LOCALES},
+    )
+
+
+def test_render_is_deterministic():
+    assert _render() == _render()
+
+
+def test_carries_attribution_and_reconciliation_time():
+    html = _render()
+    assert RECON["article"]["author"] in html
+    assert RECON["checked_at"] in html
+    assert "techcommunity.microsoft.com" in html
+
+
+def test_every_entity_appears_with_verdict_and_source():
+    html = _render()
+    for row in RECON["entities"]:
+        assert row["name"] in html
+        assert row["source_urls"]["en"] in html
+
+
+def test_both_languages_present():
+    html = _render()
+    assert 'data-langroot="en"' in html and 'data-langroot="de"' in html
+    assert "Eine neue Angriffsfläche" in html and "A new attack surface" in html
+
+
+def test_has_print_styles_and_export_links():
+    html = _render()
+    assert "@media print" in html
+    for name in LOCALES:
+        assert f'href="brief.{name}.pdf" download' in html
+        assert f'href="brief.{name}.pptx" download' in html
+
+
+def test_figures_are_clickable_and_saveable():
+    html = _render()
+    assert 'data-entity="unified-agent-observability"' in html
+    assert 'href="reference-architecture.en.svg" download' in html
+    assert 'href="reference-architecture.en@4x.png" download' in html
+
+
+def test_refuses_to_publish_an_unknown_state():
+    import pytest
+    from sasb.verdicts import Verdict, assert_publishable
+    with pytest.raises(ValueError, match="not a known state"):
+        assert_publishable([Verdict.CURRENT, Verdict.NOT_FOUND])
