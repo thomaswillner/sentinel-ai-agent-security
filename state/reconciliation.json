@@ -1,0 +1,448 @@
+{
+  "article": {
+    "author": "SantoshPargi",
+    "body_hash": "d806687f59382a9e91faec302af4cf8ead11ef34bde9d6ba2a01cda64108ef3a",
+    "labels": [
+      "AI Security",
+      "Agent 365",
+      "Defender XDR",
+      "Prompt Injection",
+      "copilot",
+      "data lake",
+      "microsoft sentinel",
+      "security copilot",
+      "security monitoring",
+      "security operations",
+      "sentinel",
+      "visibility"
+    ],
+    "last_edit_time": "2026-07-31T02:30:39+00:00",
+    "message_id": "4542583",
+    "post_time": "2026-07-31T02:30:39+00:00",
+    "source_url": "https://techcommunity.microsoft.com/blog/coreinfrastructureandsecurityblog/securing-enterprise-ai-agents-with-microsoft-sentinel/4542583",
+    "subject": "Securing Enterprise AI Agents with Microsoft Sentinel"
+  },
+  "checked_at": "2026-08-18T20:37:08Z",
+  "entities": [
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-attribute-reference",
+      "fingerprint": "ea5288fc7d672105",
+      "id": "a365-attribute-reference",
+      "kind": "integration",
+      "name": "Agent 365 observability attribute reference",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/microsoft-agent-365/developer/observability-attribute-reference",
+        "en": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-attribute-reference"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "documented at https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts: 'no longer the recommended path for new integrations'"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability",
+      "fingerprint": "5ee6ac0dcaacd462",
+      "id": "a365-observability-sdk",
+      "kind": "integration",
+      "name": "Observability SDK",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/microsoft-agent-365/developer/observability",
+        "en": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability"
+      },
+      "status_detected": "superseded",
+      "verdict": "DEPRECATED"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts",
+      "fingerprint": "5e256c6e52df1894",
+      "id": "agent-365",
+      "kind": "platform",
+      "name": "Agent 365",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/microsoft-agent-365/developer/observability-concepts",
+        "en": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-cloudappevents-table",
+      "fingerprint": "061a9d4c625ea278",
+      "id": "cloud-app-events",
+      "kind": "table",
+      "name": "CloudAppEvents",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/defender-xdr/advanced-hunting-cloudappevents-table",
+        "en": "https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-cloudappevents-table"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
+      "fingerprint": "91ef35cc7f60f6c2",
+      "id": "conn-agent-365",
+      "kind": "connector",
+      "name": "Agent 365 data connector",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/azure/sentinel/data-connectors-reference",
+        "en": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
+      "fingerprint": "91ef35cc7f60f6c2",
+      "id": "conn-defender-cloud",
+      "kind": "connector",
+      "name": "Microsoft Defender for Cloud connector",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/azure/sentinel/data-connectors-reference",
+        "en": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
+      "fingerprint": "91ef35cc7f60f6c2",
+      "id": "conn-defender-xdr",
+      "kind": "connector",
+      "name": "Microsoft Defender XDR connector",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/azure/sentinel/data-connectors-reference",
+        "en": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
+      "fingerprint": "91ef35cc7f60f6c2",
+      "id": "copilot-activity",
+      "kind": "table",
+      "name": "CopilotActivity",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/azure/sentinel/data-connectors-reference",
+        "en": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/fundamentals-what-is-copilot-studio",
+      "fingerprint": "746f699811645e8c",
+      "id": "copilot-studio",
+      "kind": "platform",
+      "name": "Microsoft Copilot Studio",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/microsoft-copilot-studio/fundamentals-what-is-copilot-studio",
+        "en": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/fundamentals-what-is-copilot-studio"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": "Defender for AI",
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-threat-protection",
+      "fingerprint": "942ab95c8cbd5e88",
+      "id": "defender-for-ai",
+      "kind": "platform",
+      "name": "AI threat protection",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/azure/defender-for-cloud/ai-threat-protection",
+        "en": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-threat-protection"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction",
+      "fingerprint": "73dcebfd484c4946",
+      "id": "defender-for-cloud",
+      "kind": "platform",
+      "name": "Microsoft Defender for Cloud",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/azure/defender-for-cloud/defender-for-cloud-introduction",
+        "en": "https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/defender-xdr/microsoft-365-defender",
+      "fingerprint": "86414aa346ace737",
+      "id": "defender-xdr",
+      "kind": "platform",
+      "name": "Microsoft Defender XDR",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/defender-xdr/microsoft-365-defender",
+        "en": "https://learn.microsoft.com/en-us/defender-xdr/microsoft-365-defender"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/entra/agent-id/what-is-microsoft-entra-agent-id",
+      "fingerprint": "00f5853fc3ee5599",
+      "id": "entra-agent-id",
+      "kind": "platform",
+      "name": "Microsoft Entra Agent ID",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/entra/agent-id/what-is-microsoft-entra-agent-id",
+        "en": "https://learn.microsoft.com/en-us/entra/agent-id/what-is-microsoft-entra-agent-id"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": "Azure AI Foundry Agents",
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry",
+      "fingerprint": "68fe5dd89840e2bc",
+      "id": "foundry",
+      "kind": "platform",
+      "name": "Microsoft Foundry",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/azure/foundry/what-is-foundry",
+        "en": "https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/microsoft-365/copilot/microsoft-365-copilot-overview",
+      "fingerprint": "6e2639e01039a675",
+      "id": "m365-copilot",
+      "kind": "platform",
+      "name": "Microsoft 365 Copilot",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/microsoft-365/copilot/microsoft-365-copilot-overview",
+        "en": "https://learn.microsoft.com/en-us/microsoft-365/copilot/microsoft-365-copilot-overview"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/microsoft-opentelemetry",
+      "fingerprint": "1c9f3f0f49636df1",
+      "id": "ms-otel-distro",
+      "kind": "integration",
+      "name": "Microsoft OpenTelemetry Distro",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/microsoft-agent-365/developer/microsoft-opentelemetry",
+        "en": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/microsoft-opentelemetry"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/purview/purview",
+      "fingerprint": "92948ca9815b6937",
+      "id": "purview",
+      "kind": "platform",
+      "name": "Microsoft Purview",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/purview/purview",
+        "en": "https://learn.microsoft.com/en-us/purview/purview"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/securityalert",
+      "fingerprint": "2296540e83d185e0",
+      "id": "security-alert",
+      "kind": "table",
+      "name": "SecurityAlert",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/azure/azure-monitor/reference/tables/securityalert",
+        "en": "https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/securityalert"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/copilot/security/microsoft-security-copilot",
+      "fingerprint": "b9511a04f575cbc8",
+      "id": "security-copilot",
+      "kind": "platform",
+      "name": "Microsoft Security Copilot",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/copilot/security/microsoft-security-copilot",
+        "en": "https://learn.microsoft.com/en-us/copilot/security/microsoft-security-copilot"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/securityincident",
+      "fingerprint": "f1e9e7c43e974dea",
+      "id": "security-incident",
+      "kind": "table",
+      "name": "SecurityIncident",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/azure/azure-monitor/reference/tables/securityincident",
+        "en": "https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/securityincident"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/overview",
+      "fingerprint": "aefb14320a08f924",
+      "id": "sentinel",
+      "kind": "platform",
+      "name": "Microsoft Sentinel",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/azure/sentinel/overview",
+        "en": "https://learn.microsoft.com/en-us/azure/sentinel/overview"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "present, named and status as expected"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/datalake/sentinel-lake-overview",
+      "fingerprint": "98e36866449223b4",
+      "id": "sentinel-data-lake",
+      "kind": "platform",
+      "name": "Microsoft Sentinel data lake",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/azure/sentinel/datalake/sentinel-lake-overview",
+        "en": "https://learn.microsoft.com/en-us/azure/sentinel/datalake/sentinel-lake-overview"
+      },
+      "status_detected": "ga",
+      "verdict": "CURRENT"
+    },
+    {
+      "article_name": null,
+      "checked_at": "2026-08-18T20:37:08Z",
+      "evidence": [
+        "'UnifiedAgentObservability' does not appear in current Microsoft documentation; the article's wording no longer matches what Microsoft documents"
+      ],
+      "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
+      "fingerprint": "91ef35cc7f60f6c2",
+      "id": "unified-agent-observability",
+      "kind": "table",
+      "name": "UnifiedAgentObservability",
+      "source_urls": {
+        "de": "https://learn.microsoft.com/de-de/azure/sentinel/data-connectors-reference",
+        "en": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference"
+      },
+      "status_detected": "documented-differently",
+      "verdict": "CHANGED"
+    }
+  ],
+  "schema_version": 1,
+  "summary": {
+    "CHANGED": 1,
+    "CURRENT": 21,
+    "DEPRECATED": 1
+  }
+}

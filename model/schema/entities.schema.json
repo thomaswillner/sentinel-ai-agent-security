@@ -57,6 +57,31 @@
           "summary": {
             "type": "string",
             "minLength": 40
+          },
+          "match_text": {
+            "type": "string",
+            "minLength": 2
+          },
+          "article_claim": {
+            "type": "boolean"
+          },
+          "deprecation_probe": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "url",
+              "phrase"
+            ],
+            "properties": {
+              "url": {
+                "type": "string",
+                "pattern": "^https://learn\\.microsoft\\.com/"
+              },
+              "phrase": {
+                "type": "string",
+                "minLength": 8
+              }
+            }
           }
         }
       }

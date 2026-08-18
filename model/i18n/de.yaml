@@ -1,0 +1,153 @@
+ui:
+  lang_name: Deutsch
+  brief_title: Absicherung von KI-Agenten im Unternehmen
+  brief_subtitle: Überwachung, Erkennung und Governance über Microsoft Sentinel, Copilot, Defender und Entra
+  derived_from: Abgeleitet aus
+  by_author: von
+  reconciled_prefix: Abgeglichen mit Microsoft Learn am
+  origin_note: >
+    Dies ist ein gepflegter Fachbeitrag, keine Kopie. Alle Aussagen werden bei jedem Lauf erneut
+    gegen die Dokumentation von Microsoft geprüft und geben damit den aktuellen Stand wieder und
+    nicht eine eingefrorene Momentaufnahme.
+  section_reconciliation: Laufender Abgleich
+  section_reconciliation_intro: >
+    Jede hier genannte Komponente ist an eine maßgebliche Microsoft-Learn-Seite gebunden und wird
+    automatisch erneut geprüft. Jede Zeile zeigt, was gemessen wurde und wann.
+  col_component: Komponente
+  col_kind: Typ
+  col_status: Status
+  col_detected: Verfügbarkeit
+  col_evidence: Gemessener Befund
+  col_source: Quelle
+  kind_platform: Plattform
+  kind_table: Tabelle
+  kind_connector: Connector
+  kind_integration: Integration
+  status_current: Aktuell
+  status_changed: Geändert
+  status_renamed: Umbenannt
+  status_deprecated: Abgelöst
+  avail_ga: Allgemein verfügbar
+  avail_preview: Vorschau
+  avail_documented_differently: Abweichend dokumentiert
+  avail_superseded: Abgelöst
+  article_called_it: Im Ursprungsartikel heißt dies
+  verified_on: Geprüft am
+  open_in_learn: Microsoft-Learn-Dokumentation öffnen
+  exports_heading: Zum Mitnehmen
+  download_pdf: PDF herunterladen
+  download_pptx: PowerPoint herunterladen
+  download_svg: Diagramm als SVG speichern
+  download_png: Diagramm als PNG speichern
+  figure_hint: Komponente auswählen für Details. Diagramm auswählen zum Vergrößern.
+  close: Schließen
+  enlarge: Diagramm vergrößern
+
+entities:
+  agent-365:
+    summary: >
+      Die einheitliche Plattform von Microsoft zur Verwaltung von KI-Agenten aus Microsoft 365
+      Copilot, Copilot Studio, Foundry, SharePoint und Laufzeitumgebungen von Drittanbietern. Ihre
+      Observability-Schicht erfasst, was ein Agent getan hat, welche Werkzeuge und Modelle er
+      aufgerufen hat, wie lange Aktionen gedauert haben und ob sie erfolgreich waren.
+  m365-copilot:
+    summary: >
+      Die in die Microsoft-365-Anwendungen eingebettete Copilot-Erfahrung. Benutzerinteraktionen und
+      Agentenaktivität sind auditierbar und damit eine der wichtigsten Telemetriequellen, die ein
+      SOC abdecken muss, sobald Copilot produktiv ist.
+  copilot-studio:
+    summary: >
+      Die Low-Code-Umgebung zum Erstellen und Veröffentlichen eigener Agenten. Hier erstellte Agenten
+      senden standardmäßig Agent-365-Observability-Daten und erscheinen daher ohne zusätzlichen
+      Entwicklungsaufwand in den Sicherheitswerkzeugen.
+  foundry:
+    summary: >
+      Die Plattform von Microsoft zum Erstellen und Betreiben von KI-Agenten und Modellen, früher
+      als Azure AI Foundry bezeichnet. Auf Foundry erstellte Agenten bringen Observability-Unterstützung
+      mit, die an Agent 365 liefert.
+  security-copilot:
+    summary: >
+      Der auf Sicherheit spezialisierte Copilot, den Analysten für Untersuchung und Threat Hunting
+      nutzen. Da er Sicherheitsdaten im Auftrag eines Analysten abfragen kann, ist seine eigene
+      Aktivität ebenso überwachenswert wie die der untersuchten Agenten.
+  sentinel:
+    summary: >
+      Die cloudnative SIEM- und SOAR-Plattform von Microsoft. Sie ist der Korrelationspunkt, an dem
+      Laufzeittelemetrie von KI-Agenten, KI-Sicherheitssignale und klassische Sicherheitswarnungen
+      für Threat Hunting und Reaktion zusammengeführt werden.
+  sentinel-data-lake:
+    summary: >
+      Die kostengünstige Langzeitspeicherebene unterhalb von Sentinel. Sie ermöglicht historische
+      KI-Untersuchungen, Baselining von Agenten und Trendanalysen über Zeiträume, die eine heiße
+      Analyseebene wirtschaftlich nicht vorhalten kann.
+  defender-xdr:
+    summary: >
+      Die XDR-Suite von Microsoft. Sie liefert Sicherheitserkennungen, Incidents und Advanced-Hunting-
+      Tabellen und ist der Weg, über den KI-Sicherheitssignale nach Sentinel gelangen.
+  defender-for-ai:
+    summary: >
+      Bedrohungsschutz für KI-Workloads innerhalb von Defender for Cloud. Er macht KI-spezifische
+      Erkennungen wie Prompt Injection und Jailbreak-Versuche sichtbar statt nur generischer
+      Workload-Warnungen.
+  defender-for-cloud:
+    summary: >
+      Schutz von Cloud-Workloads über Azure- und Multicloud-Umgebungen hinweg. Er speist KI-bezogene
+      Sicherheitswarnungen in dieselbe Incident-Pipeline ein wie die übrige Cloud-Landschaft.
+  purview:
+    summary: >
+      Die Plattform von Microsoft für Data Governance und Compliance. Sie nutzt Aktivitätsdaten von
+      Agenten für Compliance-Überwachung und Untersuchungen und ergänzt damit die Sicherheitssicht
+      von Defender und Sentinel.
+  entra-agent-id:
+    summary: >
+      Identitäts- und Sicherheitsrahmen, der Microsoft Entra auf KI-Agenten ausweitet. Agenten
+      erhalten eigene Identitätskonstrukte – aus wiederverwendbaren Blueprints erzeugte
+      Agentenidentitäten mit verantwortlichen Personen und Governance –, sodass Agentenaktionen wie
+      menschliche zugeordnet und gesteuert werden können.
+  unified-agent-observability:
+    summary: >
+      Die Tabelle, die der Ursprungsartikel als Ziel der Agent-365-Laufzeittelemetrie nennt: Prompts,
+      Sitzungen, Werkzeugaufrufe, Argumente, Antworten und Fehler. Ihr aktuell dokumentierter Status
+      ist einer der Befunde, die dieser Beitrag nachverfolgt.
+  cloud-app-events:
+    summary: >
+      Die Advanced-Hunting-Tabelle von Defender, die KI-Sicherheitssignale trägt. Agent-365-
+      Observability-Attribute landen dokumentiert in ihrem Feld RawEventData; damit ist sie zentral
+      für die Frage, ob ein Prompt bösartig war.
+  copilot-activity:
+    summary: >
+      Tabelle für Nutzungs- und Auditprotokolle von Copilot, genutzt für Governance, Compliance und
+      Einführungsberichte statt für Angriffserkennung.
+  security-alert:
+    summary: >
+      Die Standardtabelle in Sentinel für Sicherheitswarnungen, einschließlich KI-bezogener
+      Erkennungen aus Defender XDR und Defender for Cloud.
+  security-incident:
+    summary: >
+      Die Standardtabelle in Sentinel für korrelierte Incidents. Sie gibt Analysten ein einzelnes
+      Untersuchungsobjekt statt verstreuter Einzelwarnungen.
+  conn-agent-365:
+    summary: >
+      Der Sentinel-Connector, der KI-Agenten-Telemetrie aus Agent 365, Foundry und Copilot in den
+      Sentinel Data Lake bringt, um Agentenverhalten, Werkzeugnutzung und Ausführung zu untersuchen.
+  conn-defender-xdr:
+    summary: >
+      Der Sentinel-Connector, der Daten aus Defender XDR aufnimmt, einschließlich der Tabelle
+      CloudAppEvents sowie Warnungen und Incidents.
+  conn-defender-cloud:
+    summary: >
+      Der Sentinel-Connector, der Cloud- und KI-Sicherheitswarnungen aus Defender for Cloud aufnimmt.
+  a365-observability-sdk:
+    summary: >
+      Das frühere Agent-365-Observability-SDK. Es funktioniert weiterhin ohne Breaking Changes, doch
+      Microsoft verweist neue Integrationen inzwischen auf die OpenTelemetry Distro – eine Ablösung,
+      die nach dem Ursprungsartikel erfolgte.
+  ms-otel-distro:
+    summary: >
+      Die von Microsoft empfohlene OpenTelemetry-Distribution mit einem einheitlichen Observability-
+      SDK für Agent 365, Foundry und Azure Monitor. Dies ist der aktuelle Weg für neue
+      Agentenintegrationen.
+  a365-attribute-reference:
+    summary: >
+      Die maßgebliche Attributliste für Agent-365-Observability-Spans. Sie legt fest, welche Felder je
+      Operation verpflichtend sind und welche in abfragbare Hunting-Felder überführt werden.

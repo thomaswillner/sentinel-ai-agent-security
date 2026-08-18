@@ -1,0 +1,43 @@
+ui:
+  lang_name: English
+  brief_title: Securing Enterprise AI Agents
+  brief_subtitle: Monitoring, detection and governance across Microsoft Sentinel, Copilot, Defender and Entra
+  derived_from: Derived from
+  by_author: by
+  reconciled_prefix: Reconciled against Microsoft Learn as of
+  origin_note: >
+    This is a maintained brief, not a copy. Its claims are re-measured against Microsoft's own
+    documentation on every run, so it reflects current guidance rather than a frozen snapshot.
+  section_reconciliation: Live reconciliation
+  section_reconciliation_intro: >
+    Every component named here is pinned to an authoritative Microsoft Learn page and re-checked
+    automatically. Each row shows what was measured and when.
+  col_component: Component
+  col_kind: Type
+  col_status: Status
+  col_detected: Availability
+  col_evidence: What was measured
+  col_source: Source
+  kind_platform: Platform
+  kind_table: Table
+  kind_connector: Connector
+  kind_integration: Integration
+  status_current: Current
+  status_changed: Changed
+  status_renamed: Renamed
+  status_deprecated: Superseded
+  avail_ga: Generally available
+  avail_preview: Preview
+  avail_documented_differently: Documented differently
+  avail_superseded: Superseded
+  article_called_it: The source article calls this
+  verified_on: Verified
+  open_in_learn: Open Microsoft Learn documentation
+  exports_heading: Take this with you
+  download_pdf: Download PDF
+  download_pptx: Download PowerPoint
+  download_svg: Save diagram as SVG
+  download_png: Save diagram as PNG
+  figure_hint: Select any component for details. Select the diagram to enlarge it.
+  close: Close
+  enlarge: Enlarge diagram

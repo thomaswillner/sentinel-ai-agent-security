@@ -1,7 +1,8 @@
 # Watched entities. Every learn_url verified HTTP 200 on 2026-08-18.
-# article_name is set only where the article's wording differs from Microsoft's
-# current wording -- that difference is itself a finding.
-# summary is our own synthesis, shown when a diagram node is clicked.
+# article_name  : set only where the article's wording differs from Microsoft's current wording.
+# match_text    : literal string to find in docs, when the display name differs from the heading.
+# article_claim : asserted by the article; absence from docs is a finding, not a broken pin.
+# summary       : our own synthesis (English canonical), shown when a diagram node is selected.
 entities:
 - id: agent-365
   name: Agent 365
@@ -102,7 +103,7 @@ entities:
   name: Microsoft Entra Agent ID
   kind: platform
   learn_url: https://learn.microsoft.com/en-us/entra/agent-id/what-is-microsoft-entra-agent-id
-  expected_status: preview
+  expected_status: ga
   summary: >-
     Identity and security framework extending Microsoft Entra to AI agents. It gives agents first-class
     identity constructs -- agent identities created from reusable blueprints, with sponsors and governance
@@ -112,7 +113,8 @@ entities:
   kind: table
   learn_url: https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference
   anchor: agent-365
-  expected_status: preview
+  article_claim: true
+  expected_status: ga
   summary: >-
     The table the source article names as the destination for Agent 365 runtime telemetry: prompts, sessions,
     tool invocations, arguments, responses and errors. Its current documented status is one of the findings
@@ -130,7 +132,7 @@ entities:
   name: CopilotActivity
   kind: table
   learn_url: https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference
-  expected_status: preview
+  expected_status: ga
   summary: >-
     Table for Copilot usage and audit logs, used for governance, compliance and adoption reporting rather
     than for attack detection.
@@ -155,7 +157,8 @@ entities:
   kind: connector
   learn_url: https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference
   anchor: agent-365
-  expected_status: preview
+  match_text: Agent 365 data connector
+  expected_status: ga
   summary: >-
     The Sentinel data connector that brings AI agent telemetry from Agent 365, Foundry and Copilot into
     the Sentinel data lake for investigation of agent behaviour, tool usage and execution.
@@ -163,6 +166,7 @@ entities:
   name: Microsoft Defender XDR connector
   kind: connector
   learn_url: https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference
+  match_text: Microsoft Defender XDR
   expected_status: ga
   summary: >-
     The Sentinel data connector that ingests Defender XDR data, including the CloudAppEvents table plus
@@ -171,6 +175,7 @@ entities:
   name: Microsoft Defender for Cloud connector
   kind: connector
   learn_url: https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference
+  match_text: Microsoft Defender for Cloud
   expected_status: ga
   summary: >-
     The Sentinel data connector that ingests cloud and AI security alerts from Defender for Cloud.
@@ -178,7 +183,11 @@ entities:
   name: Observability SDK
   kind: integration
   learn_url: https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability
+  match_text: Observability SDK
   expected_status: superseded
+  deprecation_probe:
+    url: https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts
+    phrase: no longer the recommended path for new integrations
   summary: >-
     The earlier Agent 365 observability SDK. It continues to work without breaking changes, but Microsoft
     now directs new integrations to the OpenTelemetry Distro instead -- a supersession that post-dates
@@ -199,4 +208,8 @@ entities:
   expected_status: ga
   summary: >-
     The authoritative attribute list for Agent 365 observability spans, defining which fields are mandatory
-    per operation and which map into queryable hunting fields.
+    per operation and which map into queryable hunting fields. match_text: Microsoft Defender XDR match_text:
+    Microsoft Defender for Cloud match_text: Agent 365 data connector article_claim: true match_text:
+    Observability SDK deprecation_probe:
+      url: https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts
+      phrase: no longer the recommended path for new integrations

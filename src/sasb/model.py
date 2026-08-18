@@ -25,6 +25,19 @@ class Entity:
     summary: str
     article_name: str | None = None
     anchor: str | None = None
+    match_text: str | None = None
+    article_claim: bool = False
+    deprecation_probe: dict | None = None
+
+    @property
+    def match_target(self) -> str:
+        """Literal string to look for in documentation.
+
+        Display names are written for humans ("Microsoft Defender XDR
+        connector"); Microsoft's pages often use a shorter heading. match_text
+        decouples the two so a wording mismatch is never reported as absence.
+        """
+        return self.match_text or self.name
 
 
 def _validate(doc: object, schema_name: str) -> None:
