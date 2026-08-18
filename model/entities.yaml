@@ -1,0 +1,202 @@
+# Watched entities. Every learn_url verified HTTP 200 on 2026-08-18.
+# article_name is set only where the article's wording differs from Microsoft's
+# current wording -- that difference is itself a finding.
+# summary is our own synthesis, shown when a diagram node is clicked.
+entities:
+- id: agent-365
+  name: Agent 365
+  kind: platform
+  learn_url: https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts
+  expected_status: ga
+  summary: >-
+    Microsoft's unified platform for managing AI agents built across Microsoft 365 Copilot, Copilot Studio,
+    Foundry, SharePoint and third-party runtimes. Its observability layer captures what an agent did,
+    which tools and models it called, how long actions took, and whether they succeeded.
+- id: m365-copilot
+  name: Microsoft 365 Copilot
+  kind: platform
+  learn_url: https://learn.microsoft.com/en-us/microsoft-365/copilot/microsoft-365-copilot-overview
+  expected_status: ga
+  summary: >-
+    The Copilot experience embedded across Microsoft 365 apps. Its user interactions and agent activity
+    are auditable, making it one of the primary telemetry sources a SOC must cover once Copilot is in
+    production.
+- id: copilot-studio
+  name: Microsoft Copilot Studio
+  kind: platform
+  learn_url: >-
+    https://learn.microsoft.com/en-us/microsoft-copilot-studio/fundamentals-what-is-copilot-studio
+  expected_status: ga
+  summary: >-
+    The low-code environment for building and publishing custom agents. Agents built here emit Agent 365
+    observability data by default, so they appear in security tooling without extra developer work.
+- id: foundry
+  name: Microsoft Foundry
+  article_name: Azure AI Foundry Agents
+  kind: platform
+  learn_url: https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry
+  expected_status: ga
+  summary: >-
+    Microsoft's platform for building and running AI agents and models, formerly branded Azure AI Foundry.
+    Agents built on Foundry carry built-in observability support that feeds Agent 365.
+- id: security-copilot
+  name: Microsoft Security Copilot
+  kind: platform
+  learn_url: https://learn.microsoft.com/en-us/copilot/security/microsoft-security-copilot
+  expected_status: ga
+  summary: >-
+    The security-domain Copilot used by analysts for investigation and hunting. Because it can query security
+    data on an analyst's behalf, its own activity is worth monitoring alongside the agents it investigates.
+- id: sentinel
+  name: Microsoft Sentinel
+  kind: platform
+  learn_url: https://learn.microsoft.com/en-us/azure/sentinel/overview
+  expected_status: ga
+  summary: >-
+    Microsoft's cloud-native SIEM and SOAR platform. It is the correlation point where AI agent runtime
+    telemetry, AI safety signals and traditional security alerts are brought together for hunting and
+    response.
+- id: sentinel-data-lake
+  name: Microsoft Sentinel data lake
+  kind: platform
+  learn_url: https://learn.microsoft.com/en-us/azure/sentinel/datalake/sentinel-lake-overview
+  expected_status: ga
+  summary: >-
+    Long-term, low-cost storage tier underneath Sentinel. It makes historical AI investigations, agent
+    baselining and trend analysis possible over retention windows that hot analytics tiers cannot economically
+    hold.
+- id: defender-xdr
+  name: Microsoft Defender XDR
+  kind: platform
+  learn_url: https://learn.microsoft.com/en-us/defender-xdr/microsoft-365-defender
+  expected_status: ga
+  summary: >-
+    Microsoft's extended detection and response suite. It supplies security detections, incidents and
+    advanced hunting tables, and is the route by which AI safety signals reach Sentinel.
+- id: defender-for-ai
+  name: AI threat protection
+  article_name: Defender for AI
+  kind: platform
+  learn_url: https://learn.microsoft.com/en-us/azure/defender-for-cloud/ai-threat-protection
+  expected_status: ga
+  summary: >-
+    Threat protection for AI workloads within Defender for Cloud. It surfaces AI-specific detections such
+    as prompt injection and jailbreak attempts rather than generic workload alerts.
+- id: defender-for-cloud
+  name: Microsoft Defender for Cloud
+  kind: platform
+  learn_url: https://learn.microsoft.com/en-us/azure/defender-for-cloud/defender-for-cloud-introduction
+  expected_status: ga
+  summary: >-
+    Cloud workload protection across Azure and multicloud estates. It contributes AI-related security
+    alerts into the same incident pipeline as the rest of the cloud estate.
+- id: purview
+  name: Microsoft Purview
+  kind: platform
+  learn_url: https://learn.microsoft.com/en-us/purview/purview
+  expected_status: ga
+  summary: >-
+    Microsoft's data governance and compliance platform. It uses agent activity data for compliance monitoring
+    and investigation, complementing the security view that Defender and Sentinel provide.
+- id: entra-agent-id
+  name: Microsoft Entra Agent ID
+  kind: platform
+  learn_url: https://learn.microsoft.com/en-us/entra/agent-id/what-is-microsoft-entra-agent-id
+  expected_status: preview
+  summary: >-
+    Identity and security framework extending Microsoft Entra to AI agents. It gives agents first-class
+    identity constructs -- agent identities created from reusable blueprints, with sponsors and governance
+    -- so agent actions can be attributed and governed like human ones.
+- id: unified-agent-observability
+  name: UnifiedAgentObservability
+  kind: table
+  learn_url: https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference
+  anchor: agent-365
+  expected_status: preview
+  summary: >-
+    The table the source article names as the destination for Agent 365 runtime telemetry: prompts, sessions,
+    tool invocations, arguments, responses and errors. Its current documented status is one of the findings
+    this brief tracks.
+- id: cloud-app-events
+  name: CloudAppEvents
+  kind: table
+  learn_url: https://learn.microsoft.com/en-us/defender-xdr/advanced-hunting-cloudappevents-table
+  expected_status: ga
+  summary: >-
+    The Defender advanced-hunting table carrying AI safety signals. Agent 365 observability attributes
+    are documented as landing in its RawEventData field, which makes it central to answering whether a
+    prompt was malicious.
+- id: copilot-activity
+  name: CopilotActivity
+  kind: table
+  learn_url: https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference
+  expected_status: preview
+  summary: >-
+    Table for Copilot usage and audit logs, used for governance, compliance and adoption reporting rather
+    than for attack detection.
+- id: security-alert
+  name: SecurityAlert
+  kind: table
+  learn_url: https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/securityalert
+  expected_status: ga
+  summary: >-
+    The standard Sentinel table for security alerts, including AI-related detections forwarded from Defender
+    XDR and Defender for Cloud.
+- id: security-incident
+  name: SecurityIncident
+  kind: table
+  learn_url: https://learn.microsoft.com/en-us/azure/azure-monitor/reference/tables/securityincident
+  expected_status: ga
+  summary: >-
+    The standard Sentinel table for correlated incidents, giving analysts a single object to investigate
+    rather than scattered individual alerts.
+- id: conn-agent-365
+  name: Agent 365 data connector
+  kind: connector
+  learn_url: https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference
+  anchor: agent-365
+  expected_status: preview
+  summary: >-
+    The Sentinel data connector that brings AI agent telemetry from Agent 365, Foundry and Copilot into
+    the Sentinel data lake for investigation of agent behaviour, tool usage and execution.
+- id: conn-defender-xdr
+  name: Microsoft Defender XDR connector
+  kind: connector
+  learn_url: https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference
+  expected_status: ga
+  summary: >-
+    The Sentinel data connector that ingests Defender XDR data, including the CloudAppEvents table plus
+    alerts and incidents.
+- id: conn-defender-cloud
+  name: Microsoft Defender for Cloud connector
+  kind: connector
+  learn_url: https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference
+  expected_status: ga
+  summary: >-
+    The Sentinel data connector that ingests cloud and AI security alerts from Defender for Cloud.
+- id: a365-observability-sdk
+  name: Observability SDK
+  kind: integration
+  learn_url: https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability
+  expected_status: superseded
+  summary: >-
+    The earlier Agent 365 observability SDK. It continues to work without breaking changes, but Microsoft
+    now directs new integrations to the OpenTelemetry Distro instead -- a supersession that post-dates
+    the source article.
+- id: ms-otel-distro
+  name: Microsoft OpenTelemetry Distro
+  kind: integration
+  learn_url: https://learn.microsoft.com/en-us/microsoft-agent-365/developer/microsoft-opentelemetry
+  expected_status: ga
+  summary: >-
+    Microsoft's recommended OpenTelemetry distribution, providing a single observability SDK across Agent
+    365, Foundry and Azure Monitor. This is the current path for new agent integrations.
+- id: a365-attribute-reference
+  name: Agent 365 observability attribute reference
+  kind: integration
+  learn_url: >-
+    https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-attribute-reference
+  expected_status: ga
+  summary: >-
+    The authoritative attribute list for Agent 365 observability spans, defining which fields are mandatory
+    per operation and which map into queryable hunting fields.

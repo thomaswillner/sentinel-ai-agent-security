@@ -1,0 +1,8 @@
+entities:
+  - id: sentinel
+    name: Microsoft Sentinel
+    kind: platform
+    learn_url: https://learn.microsoft.com/en-us/azure/sentinel/overview
+    expected_status: ga
+    summary: Fixture entity used to prove the schema gate rejects malformed input rather than accepting it.
+    surprise_field: this key is not in the schema
