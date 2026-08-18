@@ -30,10 +30,40 @@ def test_chrome_deprecation_language_does_not_false_positive():
     assert classify(_entity(), _result("learn_ok.html")).verdict is not Verdict.DEPRECATED
 
 
-def test_planted_deprecation_banner_is_detected():
+def test_planted_deprecation_banner_is_flagged():
+    """A callout is evidence worth surfacing, but it is not an assertion.
+
+    It may describe a sub-feature, a legacy API or a portal experience rather
+    than the product the page is about, so it raises review rather than
+    publishing DEPRECATED as fact.
+    """
     p = classify(_entity(), _result("learn_deprecated.html"))
-    assert p.verdict is Verdict.DEPRECATED
+    assert p.verdict is not Verdict.CURRENT
     assert any("deprecat" in e.lower() or "retir" in e.lower() for e in p.evidence)
+    assert "needs review" in " ".join(p.evidence)
+
+
+def test_only_a_pinned_probe_asserts_deprecation():
+    """The single path allowed to publish DEPRECATED as a fact."""
+    from sasb.learn_probe import probe
+    import sasb.learn_probe as lp, importlib
+
+    ent = _entity(id="sdk", deprecation_probe={
+        "url": "https://learn.microsoft.com/en-us/pin",
+        "phrase": "no longer the recommended path"})
+    healthy = ('<html><head><title>Microsoft Sentinel</title></head><body><main>'
+               '<h1>Microsoft Sentinel</h1><p>All well.</p></main></body></html>')
+    pinned = ('<html><body><main><p>The earlier tool is no longer the recommended '
+              'path for new integrations.</p></main></body></html>')
+
+    lp.fetch = lambda url, timeout=30: FetchResult(
+        url, url, 200, pinned if url.endswith("/pin") else healthy)
+    try:
+        result = probe(ent)
+    finally:
+        importlib.reload(lp)
+    assert result.verdict is Verdict.DEPRECATED
+    assert result.status_detected == "superseded"
 
 
 def test_title_and_name_change_is_renamed():
@@ -141,3 +171,65 @@ def test_a_qualified_retirement_does_not_deprecate_the_product():
             '</main></body></html>')
     result = classify(_entity(), FetchResult(URL, URL, 200, body))
     assert result.verdict is not Verdict.DEPRECATED
+
+
+# --- regressions from the second glm-5.3 review ---
+
+def test_unreachable_pinned_probe_is_inconclusive_not_drift():
+    """An unreachable pin must not become a published CHANGED verdict."""
+    from sasb.learn_probe import probe
+    import sasb.learn_probe as lp, importlib
+
+    ent = _entity(id="sdk", deprecation_probe={
+        "url": "https://learn.microsoft.com/en-us/pin", "phrase": "no longer recommended"})
+    healthy = ('<html><head><title>Microsoft Sentinel</title></head><body><main>'
+               '<h1>Microsoft Sentinel</h1><p>All well.</p></main></body></html>')
+
+    def fake_fetch(url, timeout=30):
+        if url.endswith("/pin"):
+            return FetchResult(url, url, 0, "", error="URLError: timeout")
+        return FetchResult(url, url, 200, healthy)
+
+    lp.fetch = fake_fetch
+    try:
+        result = probe(ent)
+    finally:
+        importlib.reload(lp)
+    assert result.verdict is Verdict.UNREACHABLE
+
+
+def test_callouts_flag_but_never_assert_deprecation():
+    """Only a pinned probe may assert. A callout can be about a sub-feature."""
+    body = ('<html><head><title>Microsoft Sentinel</title></head><body><main>'
+            '<h1>Microsoft Sentinel</h1><div class="content"><div class="WARNING">'
+            '<div class="icon"></div><p>The legacy API is retired.</p></div></div>'
+            '</main></body></html>')
+    result = classify(_entity(), FetchResult(URL, URL, 200, body))
+    assert result.verdict is not Verdict.DEPRECATED
+    assert result.verdict is not Verdict.CURRENT
+
+
+def test_one_sentence_comparator_does_not_assert():
+    """'Agent 365 supersedes the earlier SDK' must not deprecate Agent 365."""
+    body = ('<html><head><title>Microsoft Sentinel</title></head><body><main>'
+            '<h1>Microsoft Sentinel</h1><p>Microsoft Sentinel supersedes the earlier '
+            'tool, which is no longer the recommended path.</p></main></body></html>')
+    assert classify(_entity(), FetchResult(URL, URL, 200, body)).verdict is not Verdict.DEPRECATED
+
+
+def test_no_longer_in_preview_is_not_preview():
+    body = ('<html><head><title>Microsoft Sentinel</title></head><body><main>'
+            '<h1>Microsoft Sentinel</h1><p>Microsoft Sentinel is no longer in preview.</p>'
+            '</main></body></html>')
+    result = classify(_entity(), FetchResult(URL, URL, 200, body))
+    assert result.status_detected != "preview"
+
+
+def test_absent_name_does_not_borrow_a_neighbours_status():
+    """With no scope, status must not be read from the whole page."""
+    body = ('<html><head><title>Connectors</title></head><body><main>'
+            '<h1>Connectors</h1><p>Some Other Product (in preview) is listed here.</p>'
+            '</main></body></html>')
+    ent = _entity(id="gone", name="Vanished Thing", kind="platform")
+    result = classify(ent, FetchResult(URL, URL, 200, body))
+    assert result.status_detected != "preview", "borrowed a neighbour's availability"

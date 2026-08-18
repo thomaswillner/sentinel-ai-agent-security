@@ -27,6 +27,9 @@ DEPRECATION_PATTERNS = (
     r"\bno longer the recommended\b",
     r"\bsupersed\w*",
     r"\bend of support\b",
+    r"\bdiscontinu\w*",
+    r"\bobsolete\b",
+    r"\breplaced by\b",
 )
 _DEPRECATION_RE = re.compile("|".join(DEPRECATION_PATTERNS), re.IGNORECASE)
 _TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
@@ -35,7 +38,9 @@ _STRIP_RE = re.compile(
 )
 _MAIN_RE = re.compile(r"<main\b[^>]*>(.*?)</main>", re.IGNORECASE | re.DOTALL)
 _TAG_RE = re.compile(r"<[^>]+>")
-_PREVIEW_RE = re.compile(r"\bis currently in preview\b|\bin preview\b", re.IGNORECASE)
+_PREVIEW_RE = re.compile(
+    r"(?<!no longer )(?<!not )\bis currently in preview\b"
+    r"|(?<!no longer )(?<!not )\bin preview\b", re.IGNORECASE)
 #: Microsoft Learn renders callouts as <div class="IMPORTANT"> etc. Only these
 #: three carry page-level status warnings; NOTE and TIP are ordinary asides.
 _CALLOUT_OPEN_RE = re.compile(r'<div class="(IMPORTANT|WARNING|CAUTION)">',
@@ -172,7 +177,11 @@ def classify(entity: Entity, result: FetchResult, *, shared_page: bool = False) 
     # Measured once, up front, so every verdict that came from a real read
     # carries a real availability. Leaving it None on the RENAMED paths meant
     # reconcile had to invent one.
-    observed_status = "preview" if _PREVIEW_RE.search(scope or text) else "ga"
+    # Only the entity's own scope may supply its availability. Falling back to
+    # the whole page let a neighbouring product's "(in preview)" be published as
+    # this entity's measurement on a page listing hundreds of connectors.
+    observed_status = ("unknown" if scope is None
+                       else "preview" if _PREVIEW_RE.search(scope) else "ga")
 
     if scope is None and entity.kind in NAME_REQUIRED_KINDS and not entity.article_claim:
         return mk(Verdict.NOT_FOUND,
@@ -188,13 +197,18 @@ def classify(entity: Entity, result: FetchResult, *, shared_page: bool = False) 
     # some product, not necessarily this one, so only the entity's own text
     # block counts there. Removing the signal entirely (the previous fix)
     # traded false positives for false negatives.
+    # A callout can be about a sub-feature, a legacy API, or a portal
+    # experience rather than the product itself, and shared_page is decided by
+    # our watchlist rather than by the page. So a callout flags for review; it
+    # does not assert. Only an explicit pinned deprecation_probe asserts.
     if not shared_page:
         callout_hits = sorted({m.group(0).lower()
                                for m in _DEPRECATION_RE.finditer(_callout_text(result.body))})
         if callout_hits:
-            return mk(Verdict.DEPRECATED,
-                      [f"deprecation notice in a page callout: {callout_hits[:5]}"],
-                      title, "superseded")
+            return mk(Verdict.CHANGED,
+                      ["deprecation language in a page callout, needs review: "
+                       f"{callout_hits[:5]}"],
+                      title, "review-needed")
 
     # Inline prose FLAGS, it never asserts. Even same-sentence co-occurrence
     # cannot tell "X is retired" from "X in the Azure portal is retired" -- the
@@ -256,7 +270,7 @@ def verify_localized(url: str, locale: str) -> str | None:
     return None
 
 
-def check_deprecation_assertion(entity: Entity) -> tuple[bool, str]:
+def check_deprecation_assertion(entity: Entity) -> tuple[bool, str, bool]:
     """Verify an explicitly pinned supersession statement.
 
     Some supersessions are documented on a different page from the thing being
@@ -267,13 +281,13 @@ def check_deprecation_assertion(entity: Entity) -> tuple[bool, str]:
     probe_spec = entity.deprecation_probe or {}
     url, phrase = probe_spec.get("url"), probe_spec.get("phrase")
     if not url or not phrase:
-        return False, ""
+        return False, f"malformed deprecation_probe on {entity.id}", False
     result = fetch(url)
     if not result.ok:
-        return False, f"supersession source unreachable: {result.error}"
+        return False, f"supersession source unreachable: {result.error}", False
     present = phrase.lower() in _text_of(result.body).lower()
     return present, (f"documented at {url}: {phrase!r}" if present
-                     else f"pinned supersession phrase absent from {url}")
+                     else f"pinned supersession phrase absent from {url}"), True
 
 
 #: Verdicts that mean the entity's own page was actually read.
@@ -289,7 +303,12 @@ def probe(entity: Entity, *, shared_page: bool = False) -> Probe:
     if result.verdict not in MEASURED:
         return result
     if entity.deprecation_probe and result.verdict is not Verdict.DEPRECATED:
-        confirmed, note = check_deprecation_assertion(entity)
+        confirmed, note, reachable = check_deprecation_assertion(entity)
+        if not reachable:
+            # The pin could not be read. Converting that into CHANGED published
+            # a drift verdict whose only evidence was a network error string.
+            return Probe(entity.id, Verdict.UNREACHABLE, result.title, "unknown",
+                         result.final_url, result.fingerprint, [note])
         if confirmed:
             return Probe(entity.id, Verdict.DEPRECATED, result.title, "superseded",
                          result.final_url, result.fingerprint, [note])

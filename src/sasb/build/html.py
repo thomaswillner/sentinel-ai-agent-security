@@ -27,6 +27,9 @@ VERDICT_LABEL = {
     "CURRENT": "status_current", "CHANGED": "status_changed",
     "RENAMED": "status_renamed", "DEPRECATED": "status_deprecated",
 }
+#: Availabilities the page knows how to render. Anything else blocks the build.
+PUBLISHABLE_STATUS = frozenset(
+    {"ga", "preview", "superseded", "documented-differently", "review-needed"})
 AVAIL_LABEL = {
     "ga": "avail_ga", "preview": "avail_preview", "superseded": "avail_superseded",
     "documented-differently": "avail_documented_differently",
@@ -396,12 +399,13 @@ def render_html(content: dict, entities: dict[str, Entity], figures: list[Figure
                 recon: dict, locales: dict[str, dict]) -> str:
     assert_publishable([Verdict(r["verdict"]) for r in recon["entities"]])
     assert_tokens_resolve(locales, entities)
-    # "unknown" is a state, not a value to render. If a row carries one, the
-    # sweep failed to measure something and the page must not claim otherwise.
-    unmeasured = sorted(r["id"] for r in recon["entities"]
-                        if r.get("status_detected") in (None, "", "unknown"))
-    if unmeasured:
-        raise ValueError(f"refusing to publish unmeasured availability for: {unmeasured}")
+    # Whitelist, not blacklist. Listing the bad values meant every new label
+    # ("review-needed", "documented-differently") was published by default
+    # simply because nobody had thought to forbid it yet.
+    unknown = sorted(f'{r["id"]}={r.get("status_detected")!r}' for r in recon["entities"]
+                     if r.get("status_detected") not in PUBLISHABLE_STATUS)
+    if unknown:
+        raise ValueError(f"refusing to publish unrecognised availability: {unknown}")
     fig_map = {f.id: f for f in figures}
     art = recon["article"]
 
