@@ -337,9 +337,9 @@ def render_svg(fig: Figure, entities: dict[str, Entity], loc: dict) -> str:
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {fig.width} {height}" '
         f'width="{fig.width}" height="{height}" role="img" '
-        f'aria-labelledby="{fig.id}-t {fig.id}-d">'
-        f'<title id="{fig.id}-t">{_esc(title)}</title>'
-        f'<desc id="{fig.id}-d">{_esc(subtitle)}</desc>'
+        f'aria-labelledby="{marker}-t {marker}-d">'
+        f'<title id="{marker}-t">{_esc(title)}</title>'
+        f'<desc id="{marker}-d">{_esc(subtitle)}</desc>'
         f"<style>{_dark_css()}</style>"
         f'<defs><marker id="{marker}" viewBox="0 0 10 10" refX="9" refY="5" '
         'markerWidth="6" markerHeight="6" orient="auto-start-reverse">'

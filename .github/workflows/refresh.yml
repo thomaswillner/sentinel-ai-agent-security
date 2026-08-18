@@ -40,18 +40,16 @@ jobs:
           python3 -m sasb.reconcile 2>&1 | tee sweep.log
           echo "code=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
 
-      - name: Refuse to publish an inconclusive sweep
-        if: steps.sweep.outputs.code == '3'
+      # Fail closed on ANY code that is not an enumerated success. Gating only
+      # on the codes the author thought of meant an unhandled exception (exit 1)
+      # skipped both guards and republished yesterday's state as today's
+      # measurement.
+      - name: Refuse to publish anything but a measured sweep
+        if: steps.sweep.outputs.code != '0' && steps.sweep.outputs.code != '2'
         run: |
-          echo "::error::A source was unreachable. Publishing now would assert a"
-          echo "::error::currency the sweep did not measure."
-          exit 1
-
-      - name: Refuse to publish an unresolved entity
-        if: steps.sweep.outputs.code == '4'
-        run: |
-          echo "::error::An entity resolved to no known state. Re-pin it in"
-          echo "::error::model/entities.yaml before this can publish."
+          echo "::error::Sweep exited ${{ steps.sweep.outputs.code }}."
+          echo "::error::0 = all current, 2 = drift needing review. Anything else"
+          echo "::error::means the measurement did not complete, so nothing publishes."
           exit 1
 
       - name: Build

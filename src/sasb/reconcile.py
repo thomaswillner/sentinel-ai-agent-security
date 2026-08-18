@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .article import ArticleRecord, load_article
-from .i18n import LOCALES
+from .i18n import LOCALES, check_completeness, load_locale
 from .learn_probe import Probe, probe, verify_localized
 from .model import Entity, load_entities
 from .verdicts import EXIT_GATE_FAILURE, EXIT_INCONCLUSIVE, Verdict, exit_code_for
@@ -39,21 +39,28 @@ def build_reconciliation(
     for entity in sorted(entities, key=lambda e: e.id):
         p = by_id[entity.id]
         sources = {"en": p.final_url}
+        translated = {"en": True}
         for loc in LOCALES:
             if loc == "en":
                 continue
-            # Falls back to the English URL when no translation was verified,
-            # so a reader is never sent to a page that does not exist.
-            sources[loc] = localized.get(entity.learn_url, {}).get(loc) or p.final_url
+            verified = localized.get(entity.learn_url, {}).get(loc)
+            # The English URL is used when no translation verified, but the
+            # substitution is recorded rather than silent: the page renders an
+            # explicit notice and the link gate checks the URL actually shown.
+            sources[loc] = verified or p.final_url
+            translated[loc] = bool(verified)
         rows.append({
             "id": entity.id,
             "name": entity.name,
             "article_name": entity.article_name,
             "kind": entity.kind,
             "verdict": str(p.verdict),
-            "status_detected": p.status_detected or "ga",
+            # Never substitute a default here: RENAMED carries status=None, and
+# defaulting it to "ga" published an availability nobody measured.
+            "status_detected": p.status_detected or "unknown",
             "final_url": p.final_url,
             "source_urls": dict(sorted(sources.items())),
+            "source_translated": dict(sorted(translated.items())),
             "fingerprint": p.fingerprint,
             "evidence": list(p.evidence),
             "checked_at": checked_at,
@@ -97,6 +104,13 @@ def main(argv: list[str] | None = None) -> int:
     args = ap.parse_args(argv)
 
     entities = load_entities(args.model)
+    # Run the translation-completeness gate in the sweep, not only under pytest.
+    # A gate with no caller in the publish path is not a gate.
+    try:
+        check_completeness({name: load_locale(name) for name in LOCALES}, entities)
+    except Exception as exc:
+        print(f"FATAL: locale completeness gate failed: {exc}", file=sys.stderr)
+        return EXIT_GATE_FAILURE
     if not entities:
         print("FATAL: empty watchlist", file=sys.stderr)
         return EXIT_GATE_FAILURE

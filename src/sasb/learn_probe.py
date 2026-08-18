@@ -38,10 +38,23 @@ _TAG_RE = re.compile(r"<[^>]+>")
 _PREVIEW_RE = re.compile(r"\bis currently in preview\b|\bin preview\b", re.IGNORECASE)
 #: Microsoft Learn renders callouts as <div class="IMPORTANT"> etc. Only these
 #: three carry page-level status warnings; NOTE and TIP are ordinary asides.
-_CALLOUT_RE = re.compile(
-    r'<div class="(IMPORTANT|WARNING|CAUTION)">(.*?)</div>', re.IGNORECASE | re.DOTALL
-)
+_CALLOUT_OPEN_RE = re.compile(r'<div class="(IMPORTANT|WARNING|CAUTION)">',
+                              re.IGNORECASE)
+_DIV_RE = re.compile(r"<div\b[^>]*>|</div>", re.IGNORECASE)
 
+#: Sentence boundaries used to bind a deprecation claim to its subject.
+#: Emitted where a block-level element ends, so a heading cannot glue onto the
+#: paragraph beneath it and lend its name to another subject's sentence.
+#: \x1f is the obvious sentinel, but Python counts the separator control
+#: characters as whitespace, so the collapse in _text_of erased it.
+BLOCK_MARK = "\x01"
+_BLOCK_RE = re.compile(
+    r"</(?:h[1-6]|p|li|div|tr|td|th|section|figcaption|blockquote)>|<br\s*/?>",
+    re.IGNORECASE)
+#: Sentence boundaries used to bind a deprecation claim to its subject. Dashes
+#: are intra-sentence punctuation -- splitting on them severed "Foo connector --
+#: retired" into a name fragment and a verb fragment.
+_SENTENCE_RE = re.compile(r"(?<=[.!?;])\s+|" + BLOCK_MARK)
 #: Characters of context searched either side of the entity name.
 SCOPE_RADIUS = 1500
 #: Kinds whose name vanishing from its page means the thing is gone.
@@ -66,7 +79,9 @@ def _text_of(body: str) -> str:
     cleaned = _STRIP_RE.sub(" ", body)
     main = _MAIN_RE.search(cleaned)
     inner = main.group(1) if main else cleaned
-    return re.sub(r"\s+", " ", _TAG_RE.sub(" ", inner)).strip()
+    inner = _BLOCK_RE.sub(BLOCK_MARK, inner)
+    flat = re.sub(r"[^\S\n]+", " ", _TAG_RE.sub(" ", inner))
+    return re.sub(r"\s*\n\s*", " ", flat).strip()
 
 
 def _title(body: str) -> str | None:
@@ -81,7 +96,8 @@ def _normalise(url: str) -> str:
 
 
 def _fingerprint(text: str) -> str:
-    return hashlib.sha256(text.lower().encode("utf-8")).hexdigest()[:16]
+    clean = " ".join(text.replace(BLOCK_MARK, " ").split()).lower()
+    return hashlib.sha256(clean.encode("utf-8")).hexdigest()[:16]
 
 
 def _callout_text(body: str) -> str:
@@ -93,7 +109,17 @@ def _callout_text(body: str) -> str:
     SDK, and window-based matching wrongly attributed it to Agent 365 itself.
     A callout is a structural signal, so it needs no subject inference.
     """
-    parts = [inner for _, inner in _CALLOUT_RE.findall(body)]
+    parts: list[str] = []
+    for match in _CALLOUT_OPEN_RE.finditer(body):
+        # Walk div open/close tags to the matching close. A non-greedy
+        # ".*?</div>" stops at the first nested close -- on a real Learn callout
+        # that is the icon div, so the entire notice was silently discarded.
+        depth, pos = 1, match.end()
+        for tag in _DIV_RE.finditer(body, match.end()):
+            depth += -1 if tag.group(0).lower() == "</div>" else 1
+            if depth == 0:
+                parts.append(body[pos:tag.start()])
+                break
     return re.sub(r"\s+", " ", _TAG_RE.sub(" ", " ".join(parts))).strip()
 
 
@@ -103,6 +129,29 @@ def _scope(text: str, needle: str) -> str | None:
     if idx < 0:
         return None
     return text[max(0, idx - SCOPE_RADIUS) : idx + len(needle) + SCOPE_RADIUS]
+
+
+def _self_referential_deprecation(text: str, needle: str) -> str | None:
+    """A deprecation sentence whose subject is this entity.
+
+    Proximity is not enough and never will be: "The earlier SDK is no longer the
+    recommended path" sits centimetres from "Agent 365" and is about something
+    else, and a neighbouring row's retirement notice sits inside any window wide
+    enough to be useful. Both were shipped as false positives.
+
+    The rule here is co-occurrence inside a single sentence: the entity's own
+    name and the deprecation language must appear together. "Foo connector --
+    retired" fires; "This feature is deprecated" does not, because it never says
+    which feature. Abstaining when the evidence does not name its subject is the
+    correct behaviour -- a pinned deprecation_probe covers those cases exactly.
+    """
+    for sentence in _SENTENCE_RE.split(text):
+        if needle.lower() not in sentence.lower():
+            continue
+        match = _DEPRECATION_RE.search(sentence)
+        if match:
+            return " ".join(sentence.split())[:200]
+    return None
 
 
 def classify(entity: Entity, result: FetchResult, *, shared_page: bool = False) -> Probe:
@@ -120,6 +169,10 @@ def classify(entity: Entity, result: FetchResult, *, shared_page: bool = False) 
     title = _title(result.body)
     needle = entity.match_target
     scope = _scope(text, needle)
+    # Measured once, up front, so every verdict that came from a real read
+    # carries a real availability. Leaving it None on the RENAMED paths meant
+    # reconcile had to invent one.
+    observed_status = "preview" if _PREVIEW_RE.search(scope or text) else "ga"
 
     if scope is None and entity.kind in NAME_REQUIRED_KINDS and not entity.article_claim:
         return mk(Verdict.NOT_FOUND,
@@ -130,17 +183,38 @@ def classify(entity: Entity, result: FetchResult, *, shared_page: bool = False) 
     # lists hundreds -- a callout belongs to some connector, not necessarily
     # this one. Attributing it here would repeat the wrong-subject error one
     # level up, so shared pages must assert supersession explicitly instead.
-    callouts = "" if shared_page else _callout_text(result.body)
-    hits = sorted({m.group(0).lower() for m in _DEPRECATION_RE.finditer(callouts)})
-    if hits:
-        return mk(Verdict.DEPRECATED,
-                  [f"deprecation notice in a page callout: {hits[:5]}"],
-                  title, "superseded")
+    # Two evidence sources, each scoped so the signal cannot be attributed to
+    # the wrong subject. On a page shared by many products a callout belongs to
+    # some product, not necessarily this one, so only the entity's own text
+    # block counts there. Removing the signal entirely (the previous fix)
+    # traded false positives for false negatives.
+    if not shared_page:
+        callout_hits = sorted({m.group(0).lower()
+                               for m in _DEPRECATION_RE.finditer(_callout_text(result.body))})
+        if callout_hits:
+            return mk(Verdict.DEPRECATED,
+                      [f"deprecation notice in a page callout: {callout_hits[:5]}"],
+                      title, "superseded")
+
+    # Inline prose FLAGS, it never asserts. Even same-sentence co-occurrence
+    # cannot tell "X is retired" from "X in the Azure portal is retired" -- the
+    # second fired against Microsoft Sentinel itself, which is not retiring.
+    # Every attempt to separate those by pattern has produced a new construct
+    # that defeats it, so the honest output is a review flag. A structural
+    # callout, or an explicit pinned deprecation_probe, is what publishes
+    # DEPRECATED as a fact.
+    sentence = _self_referential_deprecation(text, needle)
+    if sentence:
+        return mk(Verdict.CHANGED,
+                  ["possible deprecation language, needs review: "
+                   f"{sentence!r}"],
+                  title, "review-needed")
 
     haystack = scope if scope is not None else text
 
     if _normalise(result.final_url) != _normalise(entity.learn_url):
-        return mk(Verdict.RENAMED, [f"redirected to {result.final_url}"], title)
+        return mk(Verdict.RENAMED, [f"redirected to {result.final_url}"], title,
+                  observed_status)
 
     if scope is None:
         if entity.article_claim:
@@ -150,9 +224,9 @@ def classify(entity: Entity, result: FetchResult, *, shared_page: bool = False) 
                       title, "documented-differently")
         return mk(Verdict.RENAMED,
                   [f"{needle!r} not found in page text; wording may have changed"],
-                  title)
+                  title, observed_status)
 
-    status = "preview" if _PREVIEW_RE.search(haystack) else "ga"
+    status = observed_status
     if status != entity.expected_status:
         return mk(Verdict.CHANGED,
                   [f"status reads {status}, model expects {entity.expected_status}"],
@@ -202,8 +276,18 @@ def check_deprecation_assertion(entity: Entity) -> tuple[bool, str]:
                      else f"pinned supersession phrase absent from {url}")
 
 
+#: Verdicts that mean the entity's own page was actually read.
+MEASURED = frozenset({Verdict.CURRENT, Verdict.CHANGED, Verdict.RENAMED,
+                      Verdict.DEPRECATED})
+
+
 def probe(entity: Entity, *, shared_page: bool = False) -> Probe:
     result = classify(entity, fetch(entity.learn_url), shared_page=shared_page)
+    # A pinned supersession check may only refine a verdict that came from an
+    # actual read. Running it after UNREACHABLE or NOT_FOUND would replace a
+    # failed measurement with a published claim about a page never seen.
+    if result.verdict not in MEASURED:
+        return result
     if entity.deprecation_probe and result.verdict is not Verdict.DEPRECATED:
         confirmed, note = check_deprecation_assertion(entity)
         if confirmed:

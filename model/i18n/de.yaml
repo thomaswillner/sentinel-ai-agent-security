@@ -44,6 +44,7 @@ ui:
   close: Schließen
   enlarge: Diagramm vergrößern
   english_only: Diese Microsoft-Learn-Seite ist nur auf Englisch verfügbar.
+  avail_review_needed: Prüfung erforderlich
 entities:
   agent-365:
     summary: >

@@ -38,6 +38,14 @@ def _leaf_keys(node: object, prefix: str = "") -> set[str]:
         for k, v in node.items():
             keys |= _leaf_keys(v, f"{prefix}.{k}" if prefix else str(k))
         return keys
+    if isinstance(node, list):
+        # Descend into lists as well. Treating a list as a single leaf let a
+        # locale ship one translated bullet where the canonical had five and
+        # still pass the completeness gate.
+        keys = set()
+        for index, item in enumerate(node):
+            keys |= _leaf_keys(item, f"{prefix}[{index}]")
+        return keys or {prefix}
     return {prefix}
 
 

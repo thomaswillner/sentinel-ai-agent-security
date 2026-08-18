@@ -43,6 +43,7 @@ ui:
   close: Close
   enlarge: Enlarge diagram
   english_only: This Microsoft Learn page is available in English only.
+  avail_review_needed: Review needed
 diagram:
   analytics_reporting: Analytics & reporting
   band_data_lake: Microsoft Sentinel data lake

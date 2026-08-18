@@ -30,6 +30,7 @@ VERDICT_LABEL = {
 AVAIL_LABEL = {
     "ga": "avail_ga", "preview": "avail_preview", "superseded": "avail_superseded",
     "documented-differently": "avail_documented_differently",
+    "review-needed": "avail_review_needed",
 }
 
 
@@ -395,6 +396,12 @@ def render_html(content: dict, entities: dict[str, Entity], figures: list[Figure
                 recon: dict, locales: dict[str, dict]) -> str:
     assert_publishable([Verdict(r["verdict"]) for r in recon["entities"]])
     assert_tokens_resolve(locales, entities)
+    # "unknown" is a state, not a value to render. If a row carries one, the
+    # sweep failed to measure something and the page must not claim otherwise.
+    unmeasured = sorted(r["id"] for r in recon["entities"]
+                        if r.get("status_detected") in (None, "", "unknown"))
+    if unmeasured:
+        raise ValueError(f"refusing to publish unmeasured availability for: {unmeasured}")
     fig_map = {f.id: f for f in figures}
     art = recon["article"]
 
