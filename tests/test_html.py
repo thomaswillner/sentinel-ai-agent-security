@@ -92,3 +92,29 @@ def test_covers_the_source_article_specifics():
                  "Most active agents", "High-risk MCP tools",
                  "Agent ownership analysis", "SCStelz"):
         assert term.lower() in html.lower(), f"article specific missing: {term}"
+
+
+def test_links_are_styled_not_browser_default():
+    """A page with a dark theme must never fall through to UA link blue.
+
+    Measured on the live page before this test existed: 23 links rendered
+    rgb(0,0,238) against a rgb(13,17,26) background -- about 1.3:1 contrast.
+    """
+    from sasb.build.html import CSS
+    assert "--link:" in CSS, "no link colour token defined"
+    assert "a{color:var(--link)" in CSS.replace(" ", ""), "no global anchor colour rule"
+    light, dark = CSS.split("@media (prefers-color-scheme:dark)", 1)
+    assert "--link:" in light, "link colour missing from the light palette"
+    assert "--link:" in dark, "link colour missing from the dark palette"
+
+
+def test_enlarged_figure_uses_the_whole_viewport():
+    """Enlarge must actually enlarge.
+
+    Measured before this test: inline 1110x596 vs lightbox 1316x707 at a
+    1440x900 viewport -- a 19% gain, which reads as 'nothing happened'.
+    """
+    from sasb.build.html import CSS
+    flat = CSS.replace(" ", "").replace("\n", "")
+    assert "width:100vw" in flat and "height:100vh" in flat, "wide dialog is not full-viewport"
+    assert "max-width:none" in flat, "wide dialog still capped by max-width"

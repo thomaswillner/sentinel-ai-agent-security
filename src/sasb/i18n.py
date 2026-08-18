@@ -25,7 +25,11 @@ def load_locale(locale: str, i18n_dir: Path | None = None) -> dict:
     path = (i18n_dir or I18N_DIR) / f"{locale}.yaml"
     if not path.exists():
         raise ModelError(f"missing locale file: {path}")
-    return yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    doc = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+    # Tag the locale so generators can build locale-unique element ids without
+    # each call site having to remember to pass the name separately.
+    doc["__locale"] = locale
+    return doc
 
 
 def _leaf_keys(node: object, prefix: str = "") -> set[str]:
@@ -40,13 +44,15 @@ def _leaf_keys(node: object, prefix: str = "") -> set[str]:
 def check_completeness(locales: dict[str, dict], entities: list[Entity]) -> None:
     """Raise ModelError unless every locale covers every canonical key."""
     canonical = locales[DEFAULT_LOCALE]
-    canon_keys = _leaf_keys({k: v for k, v in canonical.items() if k != "entities"})
+    canon_keys = _leaf_keys({k: v for k, v in canonical.items()
+                         if k not in ("entities", "__locale")})
 
     for name, doc in sorted(locales.items()):
         if name == DEFAULT_LOCALE:
             continue
         missing = sorted(
-            canon_keys - _leaf_keys({k: v for k, v in doc.items() if k != "entities"})
+            canon_keys - _leaf_keys({k: v for k, v in doc.items()
+                                     if k not in ("entities", "__locale")})
         )
         if missing:
             raise ModelError(f"locale {name!r} is missing keys: {missing[:10]}")

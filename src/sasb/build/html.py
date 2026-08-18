@@ -195,12 +195,14 @@ CSS = """
  --accent:#2a5bd7;--accent-ink:#fff;
  --ok:#1a7f4b;--ok-bg:#e6f6ed;--warn:#8a5a00;--warn-bg:#fdf3e0;
  --info:#1f5fa8;--info-bg:#e7f1fb;--dep:#8c3a2e;--dep-bg:#fbeae7;
+ --link:#1c4fd8;
  --shadow:0 1px 3px rgba(16,32,64,.08),0 8px 24px rgba(16,32,64,.06);
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
  --bg:#0d111a;--panel:#151b28;--ink:#e9eefb;--muted:#a2b0cc;--line:#2a3550;
  --accent:#8fb0ff;--accent-ink:#0d111a;
  --ok:#7fd7a6;--ok-bg:#123024;--warn:#e5bf78;--warn-bg:#33280f;
+ --link:#eef2fb;
  --info:#9cc4f2;--info-bg:#12263c;--dep:#f0a89b;--dep-bg:#3a1f1a;
  --shadow:0 1px 3px rgba(0,0,0,.5),0 8px 24px rgba(0,0,0,.4);
 }}
@@ -208,8 +210,14 @@ CSS = """
  --bg:#0d111a;--panel:#151b28;--ink:#e9eefb;--muted:#a2b0cc;--line:#2a3550;
  --accent:#8fb0ff;--accent-ink:#0d111a;
  --ok:#7fd7a6;--ok-bg:#123024;--warn:#e5bf78;--warn-bg:#33280f;
+ --link:#eef2fb;
  --info:#9cc4f2;--info-bg:#12263c;--dep:#f0a89b;--dep-bg:#3a1f1a;
 }
+/* Anchors must never fall through to the UA default (#0000EE), which is
+   unreadable on the dark palette. Underlines carry the affordance so the
+   colour can sit close to the body text. */
+a{color:var(--link);text-decoration:underline;text-underline-offset:3px}
+a:hover,a:focus-visible{text-decoration-thickness:2px}
 body{margin:0;background:var(--bg);color:var(--ink);
  font:16px/1.65 'Segoe UI',system-ui,-apple-system,'Helvetica Neue',sans-serif}
 .wrap{max-width:1180px;margin:0 auto;padding:28px 20px 80px}
@@ -256,12 +264,13 @@ table.recon{border-collapse:collapse;width:100%;font-size:14px;min-width:780px}
 .b-renamed{background:var(--warn-bg);color:var(--warn)}
 .b-deprecated{background:var(--dep-bg);color:var(--dep)}
 .node:hover .card,.node:focus-visible .card{stroke:var(--accent);stroke-width:2}
-a.ent{color:var(--accent);cursor:pointer;text-decoration:underline;
+a.ent{color:var(--link);cursor:pointer;text-decoration:underline;
  text-decoration-style:dotted;text-underline-offset:3px}
 a.ent:hover,a.ent:focus-visible{text-decoration-style:solid}
 dialog.lb{border:1px solid var(--line);border-radius:16px;padding:0;max-width:min(680px,92vw);
  background:var(--panel);color:var(--ink);box-shadow:var(--shadow)}
-dialog.lb.wide{max-width:96vw;width:96vw}
+dialog.lb.wide{max-width:none;width:100vw;height:100vh;max-height:100vh;
+ border-radius:0;border:0}
 dialog.lb::backdrop{background:rgba(8,12,22,.62)}
 .lb-in{padding:20px 22px 22px}
 .lb-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
@@ -273,8 +282,11 @@ dialog.lb::backdrop{background:rgba(8,12,22,.62)}
 .lb .warn{color:var(--warn);font-size:13px;margin-top:8px}
 .lb .x{border:1px solid var(--line);background:transparent;color:var(--ink);
  border-radius:999px;width:34px;height:34px;font-size:18px;cursor:pointer;flex:none}
-.lb-fig{padding:10px}
-.lb-fig svg{width:100%;height:auto}
+.lb-fig{padding:8px;height:calc(100vh - 66px);display:flex;align-items:center;
+ justify-content:center;overflow:auto;cursor:zoom-in}
+.lb-fig svg{width:auto;height:auto;max-width:100%;max-height:100%}
+.lb-fig.zoom{align-items:flex-start;justify-content:flex-start;cursor:zoom-out}
+.lb-fig.zoom svg{max-width:none;max-height:none;width:220%}
 footer{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);
  color:var(--muted);font-size:13px}
 [data-langroot]{display:none}
@@ -342,6 +354,8 @@ JS = """
     +'<button class="x" type="button" data-close aria-label="'+esc(t.close)
     +'">&times;</button></div><div class="lb-fig">'
     +fig.querySelector('.fig-canvas').innerHTML+'</div></div>',true);return;}
+  var zoomable=ev.target.closest('.lb-fig');
+  if(zoomable){zoomable.classList.toggle('zoom');return;}
   var node=ev.target.closest('[data-entity]');
   if(node){detail(node.getAttribute('data-entity'));}
  });

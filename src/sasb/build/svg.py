@@ -143,7 +143,7 @@ def _card_height(caption_lines: int) -> float:
 
 
 def _render_columns(canvas: _Canvas, fig: Figure, entities: dict[str, Entity],
-                    loc: dict, top: float) -> float:
+                    loc: dict, top: float, marker: str = "arrow") -> float:
     count = len(fig.columns)
     col_w = (fig.width - 2 * MARGIN - GUTTER * (count - 1)) / count
     inner_w = col_w - 2 * CARD_PAD - 12
@@ -189,7 +189,7 @@ def _render_columns(canvas: _Canvas, fig: Figure, entities: dict[str, Entity],
             arrow_y = top + col_h / 2
             canvas.add(f'<path d="M{arrow_x:.1f} {arrow_y:.1f} h{GUTTER - 4:.1f}" '
                        f'class="flow" stroke="#2a5bd7" stroke-width="1.6" fill="none" '
-                       f'marker-end="url(#arrow)"/>')
+                       f'marker-end="url(#{marker})"/>')
 
     return top + col_h
 
@@ -236,7 +236,8 @@ def _render_bands(canvas: _Canvas, fig: Figure, entities: dict[str, Entity],
     return y
 
 
-def _render_steps(canvas: _Canvas, fig: Figure, loc: dict, top: float) -> float:
+def _render_steps(canvas: _Canvas, fig: Figure, loc: dict, top: float,
+                  marker: str = "arrow") -> float:
     width = min(430, fig.width - 2 * MARGIN)
     x = (fig.width - width) / 2
     y = top + 10
@@ -248,7 +249,7 @@ def _render_steps(canvas: _Canvas, fig: Figure, loc: dict, top: float) -> float:
         if index < len(fig.steps) - 1:
             canvas.add(f'<path d="M{fig.width / 2:.1f} {y + step_h:.1f} v16" '
                        f'class="flow" stroke="#2a5bd7" stroke-width="1.6" fill="none" '
-                       f'marker-end="url(#arrow)"/>')
+                       f'marker-end="url(#{marker})"/>')
         y += step_h + 22
     return y
 
@@ -317,17 +318,22 @@ def render_svg(fig: Figure, entities: dict[str, Entity], loc: dict) -> str:
     canvas.text(fig.width / 2, 54, _label(loc, f"fig_{fig.id}_sub"), "fig-sub",
                 anchor="middle")
 
+    marker = f"arrow-{fig.id}-{loc.get('__locale', 'x')}"
     if fig.columns:
-        bottom = _render_columns(canvas, fig, entities, loc, 74)
+        bottom = _render_columns(canvas, fig, entities, loc, 74, marker)
         bottom = _render_bands(canvas, fig, entities, loc, bottom)
     else:
-        bottom = _render_steps(canvas, fig, loc, 74)
+        bottom = _render_steps(canvas, fig, loc, 74, marker)
 
     # Fit the canvas to real content. The model's height is a hint for
     # authoring only; trailing whitespace would survive into PDF and PPTX.
     height = int(bottom + MARGIN)
     title = _label(loc, f"fig_{fig.id}")
     subtitle = _label(loc, f"fig_{fig.id}_sub")
+    # Ids must be unique across the page: both languages inline all three
+    # figures, and the lightbox clones one of them, so a shared "arrow" id put
+    # seven identical ids in the document and every url(#arrow) resolved to the
+    # first one in tree order.
     return (
         f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {fig.width} {height}" '
         f'width="{fig.width}" height="{height}" role="img" '
@@ -335,7 +341,7 @@ def render_svg(fig: Figure, entities: dict[str, Entity], loc: dict) -> str:
         f'<title id="{fig.id}-t">{_esc(title)}</title>'
         f'<desc id="{fig.id}-d">{_esc(subtitle)}</desc>'
         f"<style>{_dark_css()}</style>"
-        '<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" '
+        f'<defs><marker id="{marker}" viewBox="0 0 10 10" refX="9" refY="5" '
         'markerWidth="6" markerHeight="6" orient="auto-start-reverse">'
         '<path d="M0 0 L10 5 L0 10 z" class="arrowfill" fill="#2a5bd7"/></marker></defs>'
         + "".join(canvas.parts)
