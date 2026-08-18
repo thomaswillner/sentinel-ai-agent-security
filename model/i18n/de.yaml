@@ -43,6 +43,7 @@ ui:
   figure_hint: Komponente auswählen für Details. Diagramm auswählen zum Vergrößern.
   close: Schließen
   enlarge: Diagramm vergrößern
+  english_only: Diese Microsoft-Learn-Seite ist nur auf Englisch verfügbar.
 entities:
   agent-365:
     summary: >
@@ -206,3 +207,107 @@ diagram:
   sr_responses: Antworten des Agenten
   sr_tools: Werkzeugaufrufe
   threat_hunting: Threat Hunting
+sections:
+  intro:
+    heading: Eine neue Angriffsfläche
+    body:
+    - >-
+      Die Einführung generativer KI im Unternehmen schreitet über Microsoft 365 Copilot, Copilot Studio,
+      Microsoft Foundry, Security Copilot und eigene, an Fachanwendungen angebundene Agenten schnell voran.
+      Einen Agenten unterscheidet von klassischer SaaS, dass er handelt: Er liest Unternehmensdaten, fragt
+      internes Wissen ab, ruft APIs und Werkzeuge auf, führt Abläufe aus und trifft Entscheidungen im
+      Auftrag einer Person.
+    - >-
+      Diese Autonomie ist Produktivitätsgewinn und Sicherheitsproblem zugleich. Überwachungsplattformen
+      wurden für Benutzer, Geräte, Anwendungen und Infrastruktur entworfen. Ein Agent ist nichts davon
+      eindeutig: Er trägt eine Identität, führt zur Laufzeit gewählte Codepfade aus und erreicht Daten
+      über Berechtigungen, die ihm ein Mensch erteilt hat.
+    bullets:
+    - Prompt Injection, einschließlich Cross-Prompt Injection (XPIA)
+    - Jailbreak- und Umgehungsversuche
+    - Unbefugte oder unerwartete Werkzeugaufrufe
+    - Datenabfluss über die Berechtigungen des Agenten
+    - Missbrauch von Agentenidentitäten und übermäßiger Datenzugriff
+  architecture:
+    heading: Referenzarchitektur
+    body:
+    - >-
+      Das Überwachungsmodell hat vier Stufen. KI-Plattformen erzeugen Telemetrie; eine Observability-
+      und Sicherheitsschicht macht daraus geregelte, klassifizierte Signale; Datenconnectoren bringen
+      diese Signale nach Microsoft Sentinel; und Sentinel korreliert sie für Hunting, Untersuchung und
+      Reaktion, wobei der Data Lake die nötige Aufbewahrungsdauer liefert.
+    - >-
+      Wählen Sie eine Komponente aus, um zu sehen, was sie tut und wie ihr aktuell dokumentierter Status
+      geprüft wurde.
+  telemetry:
+    heading: Telemetriequellen
+    body:
+    - >-
+      Die Quellen ergänzen einander, statt sich zu doppeln. Laufzeittelemetrie beantwortet, was ein Agent
+      getan hat. Identitätsdaten beantworten, wem er gehört und worauf er zugreifen darf. Copilot-Auditprotokolle
+      beantworten, wie er genutzt wird. Sicherheitssignale beantworten, ob ein Prompt bösartig war. Warnungen
+      und Incidents beantworten, was der Sicherheitsstack daraus geschlossen hat.
+    - >-
+      Ein SOC braucht alle fünf, um einen Vorfall zu rekonstruieren. Laufzeittelemetrie allein zeigt Aktionen
+      ohne Absicht; Sicherheitssignale allein zeigen Absicht ohne Folgen.
+  two_tables:
+    heading: Die beiden zentralen Tabellen
+    body:
+    - >-
+      Zwei Datenbestände tragen den größten Teil der Untersuchungslast, und sie beantworten unterschiedliche
+      Fragen. Die eine fragt, ob ein Prompt bösartig war – Prompt-Shield-Bewertungen, Injection- und XPIA-Erkennungen,
+      Jailbreak-Einstufungen. Die andere fragt, was der Agent daraufhin getan hat: welches Werkzeug lief,
+      welcher Connector ausgeführt wurde, welche Argumente übergeben wurden und was zurückkam.
+    - >-
+      Das Bindeglied ist die Sitzungskennung. Sie macht aus einer isolierten Sicherheitsbewertung eine
+      Kette von Folgen.
+  hunting:
+    heading: Vom Signal zum Verhalten
+    body:
+    - >-
+      Eine Sicherheitserkennung allein ist noch kein Vorfall. Entscheidend ist, ob ein verdächtiger Prompt
+      zu nachgelagerten Aktionen geführt hat. Der Untersuchungsweg hat deshalb immer dieselbe Form: beim
+      Sicherheitssignal beginnen, den Prompt identifizieren, die Sitzung ermitteln, dann in die Laufzeittelemetrie
+      wechseln und lesen, was der Agent tatsächlich ausgeführt hat.
+  forensics:
+    heading: Sitzungsrekonstruktion
+    body:
+    - >-
+      Wer eine Sitzung durchgängig korreliert, erhält eine forensische Zeitleiste statt unverbundener
+      Einzelereignisse: den Prompt einer Person, den ausgelösten Agentenaufruf, die aufgerufenen Werkzeuge,
+      die ausgeführten Connectoren und die zurückgegebenen Antworten.
+    - >-
+      Das ist zugleich die Grundlage für Governance-Arbeit ohne Vorfallbezug – normales Agentenverhalten
+      als Basislinie erfassen, tatsächlich genutzte Werkzeuge inventarisieren und das erste Auftreten
+      eines nicht freigegebenen Werkzeugs bemerken.
+  detection:
+    heading: Detection Engineering
+    body:
+    - >-
+      Dieselbe Telemetrie trägt Analyseregeln. Sinnvolle Erkennungen gruppieren sich um wenige Themen:
+      Prompt-Manipulation, Umgehung von Schutzmechanismen, neue oder seltene Werkzeugnutzung, ungewöhnlicher
+      Zugriff auf sensible Daten sowie Änderungen an Agentenidentitäten, etwa ein Wechsel der Zuständigkeit
+      oder Aktivität außerhalb des etablierten Musters.
+    - >-
+      Seltenheit ist hier oft aussagekräftiger als Menge. Ein Werkzeug, das ein Agent zum ersten Mal überhaupt
+      aufruft, verdient mehr Aufmerksamkeit als ein vielbeschäftigter Connector, der sich verhält wie
+      immer.
+  analytics:
+    heading: Langfristige Analyse
+    body:
+    - >-
+      Da Agenten-Telemetrie im Data Lake aufbewahrt werden kann, ist die Untersuchung nicht auf ein kurzes
+      heißes Zeitfenster beschränkt. Das ermöglicht historische Analysen von KI-Angriffen, Verhaltens-Baselines,
+      Werkzeuginventare und Einführungstrends – und es bedeutet, dass das Verhalten eines Agenten von
+      vor sechs Monaten noch verfügbar ist, wenn die Frage danach endlich gestellt wird.
+  integration_path:
+    heading: Integrationsweg
+    body:
+    - >-
+      Für Teams, die eigene Agenten instrumentieren, hat sich der empfohlene Weg verschoben. Microsoft
+      verweist neue Integrationen inzwischen auf die eigene OpenTelemetry-Distribution, die ein einheitliches
+      Observability-SDK für Agent 365, Foundry und Azure Monitor bereitstellt. Das frühere SDK funktioniert
+      weiterhin ohne Breaking Changes, ist aber nicht mehr der empfohlene Ausgangspunkt.
+    - >-
+      Das zeigt gut, warum sich diese Seite selbst überprüft: Diese Änderung erfolgte nach dem Artikel,
+      aus dem sie abgeleitet ist.

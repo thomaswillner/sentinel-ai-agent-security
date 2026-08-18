@@ -1,0 +1,25 @@
+# Section order and entity bindings. All prose lives in model/i18n/<locale>.yaml
+# under sections.<id>, so a claim and its translation stay in step.
+sections:
+  - id: intro
+    entities: [agent-365, m365-copilot, copilot-studio, foundry, security-copilot]
+  - id: architecture
+    figure: reference-architecture
+    entities: [sentinel, agent-365, defender-xdr, sentinel-data-lake]
+  - id: telemetry
+    entities: [conn-agent-365, entra-agent-id, copilot-activity, cloud-app-events,
+               security-alert, security-incident]
+  - id: two_tables
+    entities: [unified-agent-observability, cloud-app-events, a365-attribute-reference]
+  - id: hunting
+    figure: prompt-injection-flow
+    entities: [cloud-app-events, agent-365]
+  - id: forensics
+    figure: session-reconstruction
+    entities: [agent-365, sentinel-data-lake]
+  - id: detection
+    entities: [sentinel, defender-for-ai, entra-agent-id]
+  - id: analytics
+    entities: [sentinel-data-lake, purview]
+  - id: integration_path
+    entities: [ms-otel-distro, a365-observability-sdk]

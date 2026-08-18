@@ -42,6 +42,7 @@ ui:
   figure_hint: Select any component for details. Select the diagram to enlarge it.
   close: Close
   enlarge: Enlarge diagram
+  english_only: This Microsoft Learn page is available in English only.
 diagram:
   analytics_reporting: Analytics & reporting
   band_data_lake: Microsoft Sentinel data lake
@@ -118,3 +119,105 @@ entities:
     caption: Ingests cloud and AI alerts
   sentinel-data-lake:
     caption: Long-term retention for hunting, analytics and investigations
+sections:
+  intro:
+    heading: A new attack surface
+    body:
+    - >-
+      Enterprise adoption of generative AI is moving quickly through Microsoft 365 Copilot, Copilot Studio,
+      Microsoft Foundry, Security Copilot and custom agents wired into line-of-business systems. What
+      separates an agent from a conventional SaaS application is that it acts: it reads enterprise data,
+      queries internal knowledge, calls APIs and tools, runs workflows and makes decisions on someone's
+      behalf.
+    - >-
+      That autonomy is the productivity gain and the security problem at once. Monitoring platforms were
+      built around users, devices, applications and infrastructure. An agent is none of those cleanly
+      -- it carries an identity, executes code paths chosen at runtime, and reaches data through permissions
+      a human granted it.
+    bullets:
+    - Prompt injection, including cross-prompt injection (XPIA)
+    - Jailbreak and safety-bypass attempts
+    - Unauthorised or unexpected tool invocation
+    - Data exfiltration through an agent's own permissions
+    - Agent identity abuse and excessive data access
+  architecture:
+    heading: Reference architecture
+    body:
+    - >-
+      The monitoring model has four stages. AI platforms produce telemetry; an observability and security
+      layer turns raw activity into governed, classified signals; data connectors carry those signals
+      into Microsoft Sentinel; and Sentinel correlates them for hunting, investigation and response, with
+      the data lake providing retention long enough for the analysis to be meaningful.
+    - >-
+      Select any component below to see what it does and how its current documented status was verified.
+  telemetry:
+    heading: Telemetry sources
+    body:
+    - >-
+      The sources complement rather than duplicate each other. Runtime telemetry answers what an agent
+      did. Identity data answers who owns it and what it may reach. Copilot audit logs answer how it is
+      being used. Safety signals answer whether a prompt was hostile. Alerts and incidents answer what
+      the security stack concluded.
+    - >-
+      A SOC needs all five to reconstruct an incident. Runtime telemetry alone shows actions without intent;
+      safety signals alone show intent without consequences.
+  two_tables:
+    heading: The two central tables
+    body:
+    - >-
+      Two datasets carry most investigative weight, and they answer different questions. One asks whether
+      a prompt was malicious -- prompt shield verdicts, injection and XPIA detections, jailbreak classifications.
+      The other asks what the agent then did -- which tool ran, which connector executed, what arguments
+      were passed, what came back.
+    - >-
+      The pivot between them is the session identifier, and it is what turns an isolated safety verdict
+      into a chain of consequences.
+  hunting:
+    heading: From signal to behaviour
+    body:
+    - >-
+      A safety detection on its own is not an incident. The question that matters is whether a suspicious
+      prompt produced downstream action. The investigation path is therefore always the same shape: start
+      at the safety signal, identify the prompt, obtain the session, then pivot into runtime telemetry
+      and read what the agent actually executed.
+  forensics:
+    heading: Session reconstruction
+    body:
+    - >-
+      Correlating a session end to end produces a forensic timeline rather than a set of disconnected
+      events: the prompt a user submitted, the agent invocation it triggered, the tools called, the connectors
+      that executed and the responses returned.
+    - >-
+      This is also the basis for governance work that has nothing to do with incidents -- baselining normal
+      agent behaviour, inventorying which tools are genuinely in use, and noticing the first appearance
+      of one that is not approved.
+  detection:
+    heading: Detection engineering
+    body:
+    - >-
+      The same telemetry supports analytics rules. Useful detections cluster around a few themes: prompt
+      manipulation, safety bypass, tool usage that is new or rare, sensitive-data access that is unusual
+      in volume or subject, and agent identity changes such as ownership moving or an agent acting outside
+      its established pattern.
+    - >-
+      Rarity is often a stronger signal than volume here. A tool invoked once, by an agent that has never
+      invoked it, is worth more attention than a busy connector behaving as it always has.
+  analytics:
+    heading: Long-term analysis
+    body:
+    - >-
+      Because agent telemetry can be retained in the data lake, investigation is not limited to a short
+      hot window. That enables historical analysis of AI attacks, behavioural baselining, tool inventory
+      reporting and adoption trends -- and it means an agent's behaviour six months ago is still available
+      when a question about it finally gets asked.
+  integration_path:
+    heading: Integration path
+    body:
+    - >-
+      For teams instrumenting their own agents, the recommended path has moved. Microsoft now directs
+      new integrations to its OpenTelemetry distribution, which provides one observability SDK across
+      Agent 365, Foundry and Azure Monitor. The earlier SDK continues to work without breaking changes,
+      but is no longer the recommended starting point.
+    - >-
+      This is a good illustration of why this page re-checks itself: that change post-dates the article
+      it derives from.
