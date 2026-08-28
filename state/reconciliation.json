@@ -22,11 +22,11 @@
     "source_url": "https://techcommunity.microsoft.com/blog/coreinfrastructureandsecurityblog/securing-enterprise-ai-agents-with-microsoft-sentinel/4542583",
     "subject": "Securing Enterprise AI Agents with Microsoft Sentinel"
   },
-  "checked_at": "2026-08-27T17:27:34Z",
+  "checked_at": "2026-08-28T18:20:42Z",
   "entities": [
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -48,7 +48,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "documented at https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts: 'no longer the recommended path for new integrations'"
       ],
@@ -70,7 +70,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -92,7 +92,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -114,7 +114,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -136,7 +136,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -158,7 +158,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -180,7 +180,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -202,7 +202,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -224,12 +224,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/fundamentals-what-is-copilot-studio",
-      "fingerprint": "a439642102f31d6d",
+      "fingerprint": "beeb5b932f37e612",
       "id": "copilot-studio",
       "kind": "platform",
       "name": "Microsoft Copilot Studio",
@@ -246,7 +246,7 @@
     },
     {
       "article_name": "Defender for AI",
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -268,7 +268,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -290,7 +290,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -312,7 +312,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -334,12 +334,12 @@
     },
     {
       "article_name": "Azure AI Foundry Agents",
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
-        "status reads preview, model expects ga"
+        "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry",
-      "fingerprint": "3c2d968b4f7d36a4",
+      "fingerprint": "2ac7bb54e0cf0518",
       "id": "foundry",
       "kind": "platform",
       "name": "Microsoft Foundry",
@@ -351,17 +351,17 @@
         "de": "https://learn.microsoft.com/de-de/azure/foundry/what-is-foundry",
         "en": "https://learn.microsoft.com/en-us/azure/foundry/what-is-foundry"
       },
-      "status_detected": "preview",
-      "verdict": "CHANGED"
+      "status_detected": "ga",
+      "verdict": "CURRENT"
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/microsoft-365/copilot/microsoft-365-copilot-overview",
-      "fingerprint": "6e2639e01039a675",
+      "fingerprint": "4718142226d7c879",
       "id": "m365-copilot",
       "kind": "platform",
       "name": "Microsoft 365 Copilot",
@@ -378,7 +378,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -400,7 +400,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -422,7 +422,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -444,7 +444,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -466,7 +466,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -488,7 +488,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "possible deprecation language, needs review: 'Microsoft Sentinel in the Azure portal retirement timeline'"
       ],
@@ -510,7 +510,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -532,7 +532,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -554,7 +554,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-08-27T17:27:34Z",
+      "checked_at": "2026-08-28T18:20:42Z",
       "evidence": [
         "'UnifiedAgentObservability' does not appear in current Microsoft documentation; the article's wording no longer matches what Microsoft documents"
       ],
@@ -577,8 +577,8 @@
   ],
   "schema_version": 1,
   "summary": {
-    "CHANGED": 3,
-    "CURRENT": 21,
+    "CHANGED": 2,
+    "CURRENT": 22,
     "DEPRECATED": 1
   }
 }
