@@ -22,11 +22,11 @@
     "source_url": "https://techcommunity.microsoft.com/blog/coreinfrastructureandsecurityblog/securing-enterprise-ai-agents-with-microsoft-sentinel/4542583",
     "subject": "Securing Enterprise AI Agents with Microsoft Sentinel"
   },
-  "checked_at": "2026-09-03T10:53:13Z",
+  "checked_at": "2026-09-04T10:52:35Z",
   "entities": [
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -48,7 +48,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "documented at https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts: 'no longer the recommended path for new integrations'"
       ],
@@ -70,7 +70,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -92,7 +92,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -114,7 +114,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -136,7 +136,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -158,7 +158,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -180,7 +180,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -202,7 +202,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -224,7 +224,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -246,7 +246,7 @@
     },
     {
       "article_name": "Defender for AI",
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -268,7 +268,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -290,7 +290,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -312,7 +312,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -334,7 +334,7 @@
     },
     {
       "article_name": "Azure AI Foundry Agents",
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -356,7 +356,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -378,7 +378,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -400,7 +400,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -422,7 +422,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -444,7 +444,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -466,7 +466,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -488,7 +488,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "possible deprecation language, needs review: 'Microsoft Sentinel in the Azure portal retirement timeline'"
       ],
@@ -510,7 +510,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -532,7 +532,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -554,7 +554,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-03T10:53:13Z",
+      "checked_at": "2026-09-04T10:52:35Z",
       "evidence": [
         "'UnifiedAgentObservability' does not appear in current Microsoft documentation; the article's wording no longer matches what Microsoft documents"
       ],
