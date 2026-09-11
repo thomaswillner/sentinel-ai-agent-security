@@ -22,11 +22,11 @@
     "source_url": "https://techcommunity.microsoft.com/blog/coreinfrastructureandsecurityblog/securing-enterprise-ai-agents-with-microsoft-sentinel/4542583",
     "subject": "Securing Enterprise AI Agents with Microsoft Sentinel"
   },
-  "checked_at": "2026-09-09T10:57:10Z",
+  "checked_at": "2026-09-11T10:50:11Z",
   "entities": [
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -48,7 +48,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "documented at https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts: 'no longer the recommended path for new integrations'"
       ],
@@ -70,7 +70,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -92,7 +92,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -114,7 +114,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -136,12 +136,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
-      "fingerprint": "91ef35cc7f60f6c2",
+      "fingerprint": "9ecf63a5b7f236be",
       "id": "conn-agent-365",
       "kind": "connector",
       "name": "Agent 365 data connector",
@@ -158,12 +158,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
-      "fingerprint": "91ef35cc7f60f6c2",
+      "fingerprint": "9ecf63a5b7f236be",
       "id": "conn-defender-cloud",
       "kind": "connector",
       "name": "Microsoft Defender for Cloud connector",
@@ -180,12 +180,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
-      "fingerprint": "91ef35cc7f60f6c2",
+      "fingerprint": "9ecf63a5b7f236be",
       "id": "conn-defender-xdr",
       "kind": "connector",
       "name": "Microsoft Defender XDR connector",
@@ -202,12 +202,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
-      "fingerprint": "91ef35cc7f60f6c2",
+      "fingerprint": "9ecf63a5b7f236be",
       "id": "copilot-activity",
       "kind": "table",
       "name": "CopilotActivity",
@@ -224,7 +224,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -246,7 +246,7 @@
     },
     {
       "article_name": "Defender for AI",
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -268,7 +268,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -290,7 +290,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -312,7 +312,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -334,7 +334,7 @@
     },
     {
       "article_name": "Azure AI Foundry Agents",
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -356,12 +356,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/microsoft-365/copilot/microsoft-365-copilot-overview",
-      "fingerprint": "ba79f82342c6e794",
+      "fingerprint": "7916c7a599db19ed",
       "id": "m365-copilot",
       "kind": "platform",
       "name": "Microsoft 365 Copilot",
@@ -378,7 +378,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -400,7 +400,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -422,7 +422,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -444,7 +444,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -466,7 +466,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -488,7 +488,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "possible deprecation language, needs review: 'Microsoft Sentinel in the Azure portal retirement timeline'"
       ],
@@ -510,7 +510,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -532,7 +532,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -554,12 +554,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-09-09T10:57:10Z",
+      "checked_at": "2026-09-11T10:50:11Z",
       "evidence": [
         "'UnifiedAgentObservability' does not appear in current Microsoft documentation; the article's wording no longer matches what Microsoft documents"
       ],
       "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
-      "fingerprint": "91ef35cc7f60f6c2",
+      "fingerprint": "9ecf63a5b7f236be",
       "id": "unified-agent-observability",
       "kind": "table",
       "name": "UnifiedAgentObservability",
