@@ -22,16 +22,16 @@
     "source_url": "https://techcommunity.microsoft.com/blog/coreinfrastructureandsecurityblog/securing-enterprise-ai-agents-with-microsoft-sentinel/4542583",
     "subject": "Securing Enterprise AI Agents with Microsoft Sentinel"
   },
-  "checked_at": "2026-10-01T06:28:55Z",
+  "checked_at": "2026-10-02T06:26:56Z",
   "entities": [
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-attribute-reference",
-      "fingerprint": "ea5288fc7d672105",
+      "fingerprint": "3a4f3151db9a7f61",
       "id": "a365-attribute-reference",
       "kind": "integration",
       "name": "Agent 365 observability attribute reference",
@@ -48,12 +48,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
-        "documented at https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts: 'no longer the recommended path for new integrations'"
+        "pinned supersession phrase absent from https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts"
       ],
-      "final_url": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability",
-      "fingerprint": "5ee6ac0dcaacd462",
+      "final_url": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/archive/observability-sdk",
+      "fingerprint": "226bc1af52b1084c",
       "id": "a365-observability-sdk",
       "kind": "integration",
       "name": "Observability SDK",
@@ -62,20 +62,20 @@
         "en": true
       },
       "source_urls": {
-        "de": "https://learn.microsoft.com/de-de/microsoft-agent-365/developer/observability",
-        "en": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability"
+        "de": "https://learn.microsoft.com/de-de/microsoft-agent-365/developer/archive/observability-sdk",
+        "en": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/archive/observability-sdk"
       },
-      "status_detected": "superseded",
-      "verdict": "DEPRECATED"
+      "status_detected": "review-needed",
+      "verdict": "CHANGED"
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
-        "present, named and status as expected"
+        "possible deprecation language, needs review: 'Use these concepts to plan your integration and understand telemetry across the Microsoft OpenTelemetry Distro , the deprecated Agent 365 Observability SDK , and direct OTel .'"
       ],
       "final_url": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts",
-      "fingerprint": "46240a2f2914f43f",
+      "fingerprint": "39322fe89f2835c7",
       "id": "agent-365",
       "kind": "platform",
       "name": "Agent 365",
@@ -87,12 +87,12 @@
         "de": "https://learn.microsoft.com/de-de/microsoft-agent-365/developer/observability-concepts",
         "en": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/observability-concepts"
       },
-      "status_detected": "ga",
-      "verdict": "CURRENT"
+      "status_detected": "review-needed",
+      "verdict": "CHANGED"
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -114,7 +114,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -136,12 +136,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
-      "fingerprint": "eb145675183f2e8d",
+      "fingerprint": "58707af85e15cbcc",
       "id": "conn-agent-365",
       "kind": "connector",
       "name": "Agent 365 data connector",
@@ -158,12 +158,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
-      "fingerprint": "eb145675183f2e8d",
+      "fingerprint": "58707af85e15cbcc",
       "id": "conn-defender-cloud",
       "kind": "connector",
       "name": "Microsoft Defender for Cloud connector",
@@ -180,12 +180,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
-      "fingerprint": "eb145675183f2e8d",
+      "fingerprint": "58707af85e15cbcc",
       "id": "conn-defender-xdr",
       "kind": "connector",
       "name": "Microsoft Defender XDR connector",
@@ -202,12 +202,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
-      "fingerprint": "eb145675183f2e8d",
+      "fingerprint": "58707af85e15cbcc",
       "id": "copilot-activity",
       "kind": "table",
       "name": "CopilotActivity",
@@ -224,12 +224,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "status reads preview, model expects ga"
       ],
       "final_url": "https://learn.microsoft.com/en-us/microsoft-copilot-studio/fundamentals-what-is-copilot-studio",
-      "fingerprint": "c826eba0e3b2541a",
+      "fingerprint": "2d8741ee1357509d",
       "id": "copilot-studio",
       "kind": "platform",
       "name": "Microsoft Copilot Studio",
@@ -246,7 +246,7 @@
     },
     {
       "article_name": "Defender for AI",
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -268,7 +268,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -290,7 +290,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -312,7 +312,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -334,7 +334,7 @@
     },
     {
       "article_name": "Azure AI Foundry Agents",
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -356,12 +356,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/microsoft-365/copilot/microsoft-365-copilot-overview",
-      "fingerprint": "27b065754a7364dc",
+      "fingerprint": "3b3896eed9404407",
       "id": "m365-copilot",
       "kind": "platform",
       "name": "Microsoft 365 Copilot",
@@ -378,12 +378,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
       "final_url": "https://learn.microsoft.com/en-us/microsoft-agent-365/developer/microsoft-opentelemetry",
-      "fingerprint": "1c9f3f0f49636df1",
+      "fingerprint": "2a790c6cf459be9f",
       "id": "ms-otel-distro",
       "kind": "integration",
       "name": "Microsoft OpenTelemetry Distro",
@@ -400,7 +400,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -422,7 +422,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -444,7 +444,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -466,7 +466,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -488,7 +488,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "possible deprecation language, needs review: 'Microsoft Sentinel in the Azure portal retirement timeline'"
       ],
@@ -510,7 +510,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -532,7 +532,7 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "present, named and status as expected"
       ],
@@ -554,12 +554,12 @@
     },
     {
       "article_name": null,
-      "checked_at": "2026-10-01T06:28:55Z",
+      "checked_at": "2026-10-02T06:26:56Z",
       "evidence": [
         "'UnifiedAgentObservability' does not appear in current Microsoft documentation; the article's wording no longer matches what Microsoft documents"
       ],
       "final_url": "https://learn.microsoft.com/en-us/azure/sentinel/data-connectors-reference",
-      "fingerprint": "eb145675183f2e8d",
+      "fingerprint": "58707af85e15cbcc",
       "id": "unified-agent-observability",
       "kind": "table",
       "name": "UnifiedAgentObservability",
@@ -577,8 +577,7 @@
   ],
   "schema_version": 1,
   "summary": {
-    "CHANGED": 3,
-    "CURRENT": 21,
-    "DEPRECATED": 1
+    "CHANGED": 5,
+    "CURRENT": 20
   }
 }
